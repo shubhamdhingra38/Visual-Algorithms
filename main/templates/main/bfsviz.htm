@@ -1,0 +1,24 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>  
+    <script src="{% static 'main/graphviz.js' %}"></script>
+    <title>Document</title>
+</head>
+<body>
+    <input type="button" name="reset_btn" id="reset" value="Reset">
+</body>
+<script>
+    $("document").ready(function(){
+        console.log("Test");
+        $("#reset").on("click", function(){
+            resetSketch();
+        });
+    });
+
+</script>
+</html>

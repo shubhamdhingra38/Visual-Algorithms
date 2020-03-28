@@ -1,0 +1,15 @@
+.adj > input{
+    margin-top: 5px;
+    margin-left: 2px;
+}
+
+.input_wrapper{
+    position: relative;
+    margin-left: 2px;
+    margin-bottom: 50px;
+}
+label {
+    position: absolute;
+    left: 40%;
+    bottom: 100%;
+}
