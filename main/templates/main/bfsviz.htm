@@ -11,13 +11,38 @@
 </head>
 <body>
     <input type="button" name="reset_btn" id="reset" value="Reset">
+    <form action="" method="POST" id="bfs_form">
+        {% csrf_token %}
+        <input type="text" name="source" id="source" placeholder="Source Vertex">
+    </form>
+    <input type="button" name="submit_btn" id="submit" value="BFS">
+
 </body>
 <script>
     $("document").ready(function(){
-        console.log("Test");
         $("#reset").on("click", function(){
             resetSketch();
         });
+        $("#submit").on("click", function(){
+            var src = $("#source").val();
+            var mat = getAdjMat();
+            $.ajax({
+                type: 'POST',
+                url: '/home/bfs/info/',
+                data: {
+                    values: JSON.stringify({
+                        'src': src,
+                        'mat': mat
+                    }),
+                    csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+                },
+                success:function(data){
+                    var result = data["result"];
+                    initBFS(result);
+                }
+
+            })
+        })
     });
 
 </script>

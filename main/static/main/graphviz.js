@@ -20,16 +20,22 @@ var edges = []
 var x1, x2, y1, y2;
 var directionX = 1,
   directionY = 0;
-
-var transX = 4,
-  transY = 4;
-var epsilon = 5;
+var transX = 2,
+  transY = 2;
+var epsilon = 2;
+var cnv; //canvas
+var result;
+var next = 0,
+  len = 0,
+  numRoot = 0,
+  currRoot;
+var visited = {};
 
 function setup() {
   setAttributes('antialias', true);
-  var cnv = createCanvas(720, 400);
+  cnv = createCanvas(720, 400);
   background(200);
-  cnv.position(50, 50);
+  cnv.position(windowWidth/4, windowHeight/4); //center
   defaultFill = 100;
   highlightColor = color(255, 0, 0);
   defaultColor = color(0, 0, 0, 70);
@@ -96,6 +102,10 @@ function isOverlapping(v) {
 
 
 function mousePressed() {
+  //if mouse inside canvas
+  if(!(mouseX >= radCircle/2 && mouseX <= width-radCircle/2 && mouseY >= radCircle/2 && mouseY <= height-radCircle/2)){
+    return; //outside, don't draw anaything
+  }
   if (mouseButton === LEFT) {
     counter += 1;
     v = new Vertex(mouseX, mouseY);
@@ -121,23 +131,7 @@ function mousePressed() {
           nodeToJoin.color = defaultColor;
           node1 = nodeToJoin;
           node2 = v;
-          isVisiting = true;
-          visX = node1.mouseX;
-          visY = node1.mouseY;
-          let res = mapForward(node1.mouseX, node1.mouseY);
-          x1 = res[0];
-          y1 = res[1];
-          res = mapForward(node2.mouseX, node2.mouseY);
-          x2 = res[0];
-          y2 = res[1];
-          slopeM = (y2 - y1) / (x2 - x1);
-          if (abs(slopeM) >= 1) {
-            directionX = 0;
-            directionY = node1.mouseY < node2.mouseY ? 1 : -1;
-          } else {
-            directionX = node1.mouseX < node2.mouseX ? 1 : -1;
-            directionY = 0;
-          }
+          // calculate();
           nodeToJoin.fill = 255;
           nodeToJoin = null;
           v.fill = 255;
@@ -191,41 +185,126 @@ function moveSmallCircle() {
 }
 
 function resetSketch(){
-    console.log("Triggered");
     clear();
     //reset stuff
     counter = 0;
     vertices = [];
     edges = [];
     adjMat = {};
+    visited = {};
 }
+
+
+function calculate(){
+  visX = node1.mouseX;
+  visY = node1.mouseY;
+  let res = mapForward(node1.mouseX, node1.mouseY);
+  x1 = res[0];
+  y1 = res[1];
+  res = mapForward(node2.mouseX, node2.mouseY);
+  x2 = res[0];
+  y2 = res[1];
+  slopeM = (y2 - y1) / (x2 - x1);
+  if (abs(slopeM) >= 1) {
+    directionX = 0;
+    directionY = node1.mouseY < node2.mouseY ? 1 : -1;
+  } else {
+    directionX = node1.mouseX < node2.mouseX ? 1 : -1;
+    directionY = 0;
+  }
+  isVisiting = true;
+}
+
+function sendNext(){
+  // u ---> v
+  if(next == len){
+    currRoot += 1;
+    if(currRoot == numRoot)
+      return;
+    node1 = vertices[result[currRoot][0]];
+    len = result[currRoot][1].length;
+    next = 0; //reset
+  }
+  // node1 = vertices[result[next]];
+  let nd = result[currRoot][1][next];
+  if(!visited[nd]){
+    visited[nd] = true;
+    node2 = vertices[result[currRoot][1][next]];
+    calculate();
+    next += 1;
+  }
+  else{
+    next += 1;
+    //make a recursive call, skip current vertex as it is already visited
+    sendNext();
+  }
+}
+
+function initBFS(res){
+  //start bfs with x as source vertex
+  node1 = vertices[res[0][0]];
+  numRoot = res.length;
+  currRoot = 0;
+  result = res;
+  len = result[0][1].length;
+  next = 0;
+  sendNext();
+}
+
+function getAdjMat(){
+  //change from dictionary representation to N x N adjacency matrix
+  let l = Object.keys(adjMat).length;
+  let mat = [];
+  for(let i=1; i<=l; ++i){
+    let row = [];
+    if(adjMat[i] == null){
+      for(let j=1; j<=l; ++j)
+        row.push(0);
+    }
+    else{
+      for(let j=1; j<=l; ++j){
+        if(adjMat[i].indexOf(j) != -1)
+          row.push(1);
+        else
+          row.push(0);
+      }
+    }
+    mat.push(row);
+  }
+  return mat;
+}
+
 
 function draw() {
   background(200);
+
   if (isVisiting) {
     if (abs(visX - node2.mouseX) <= epsilon && (visY - node2.mouseY) <= epsilon) {
-      isVisting = false; //reset
       node1.markVisited();
       node2.markVisited();
+      isVisiting = false; //reset
+      sendNext();
     } else {
       moveSmallCircle();
       fill(0, 255, 0, 100);
       stroke(color(0, 255, 0, 100));
       circle(visX, visY, radSmallCircle);
     }
-
   }
+
   for (let i = 0; i < edges.length; ++i) {
     stroke(defaultColor);
     strokeWeight(5);
     line(edges[i][0], edges[i][1], edges[i][2], edges[i][3]);
     strokeWeight(1);
   }
+
   for (let i = 0; i < vertices.length; ++i) {
     if (vertices[i] == v)
       strokeWeight(4);
     vertices[i].display();
   }
+
   //TODO
   //debug info, useful errors to users such as where node cannot be placed
 }

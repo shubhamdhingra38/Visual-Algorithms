@@ -10,6 +10,7 @@ class Graph:
     def __init__(self, n_vertices):
         self.n_vertices = n_vertices
         self.mat = defaultdict(list)
+        self.visited = [False] * n_vertices
         
     def create_graph(self, values):
         for i in range(self.n_vertices):
@@ -19,16 +20,30 @@ class Graph:
         
     def add_node(self, u, v):
         self.mat[u].append(v)
+        
+    def debug_mat(self):
+        print(self.mat)
 
     def bfs(self, src):
+        result = []
+        complete_bfs = []
         queue = [src]
         while len(queue) != 0:
             node = queue.pop(0)
-            print(green, node, "->", end=' ')
-            neighbors = self.mat[node]
-            # print(neighbors)
-            queue.extend(neighbors)
-        print("Done.")
+            if not self.visited[node]:
+                self.visited[node] = True
+                print(green, node, "->", end=' ')
+                result.append(node)
+                neighbors = self.mat[node]
+                if len(neighbors) != 0:
+                    l = []
+                    for nbr in neighbors:
+                        if not self.visited[nbr]:
+                            l.append(nbr)
+                    if l != []:
+                        complete_bfs.append([node, l])
+                queue.extend(neighbors)
+        return (result, complete_bfs)
             
     def dfs(self):
         pass
@@ -45,13 +60,16 @@ def home(request):
 def bfs_info(request):
     if request.method == 'POST':
         values = json.loads(request.POST['values'])
-        g = Graph(n_vertices=len(values))
-        g.create_graph(values)
-        g.bfs(0)
-        result = sum([sum(v) for v in values])
-        response = JsonResponse({'result': result})
+        adj_mat = values['mat']
+        src = int(values['src'])
+        g = Graph(n_vertices=len(adj_mat))
+        g.create_graph(adj_mat)
+        result, complete_bfs = g.bfs(src-1)
+        print(green, complete_bfs)
+        # g.debug_mat()
+        response = JsonResponse({'result': complete_bfs})
         return response
-    
+
 
 def bfs_visual(request):
     return render(request, 'main/bfsviz.htm')
