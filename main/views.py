@@ -4,13 +4,17 @@ from django.urls import reverse
 from colorama import Fore, Back 
 import json
 from collections import defaultdict
-green = Fore.GREEN
+
+DEBUG = True
+GREEN = Fore.GREEN
+
 
 class Graph:
     def __init__(self, n_vertices):
         self.n_vertices = n_vertices
         self.mat = defaultdict(list)
         self.visited = [False] * n_vertices
+        self.dfs_res = []
         
     def create_graph(self, values):
         for i in range(self.n_vertices):
@@ -21,19 +25,15 @@ class Graph:
     def add_node(self, u, v):
         self.mat[u].append(v)
         
-    def debug_mat(self):
-        print(self.mat)
 
     def bfs(self, src):
         result = []
-        complete_bfs = []
         queue = [src]
         while len(queue) != 0:
             node = queue.pop(0)
             if not self.visited[node]:
                 self.visited[node] = True
-                print(green, node, "->", end=' ')
-                result.append(node)
+                if DEBUG: print(GREEN, node, "->", end=' ')
                 neighbors = self.mat[node]
                 if len(neighbors) != 0:
                     l = []
@@ -41,42 +41,63 @@ class Graph:
                         if not self.visited[nbr]:
                             l.append(nbr)
                     if l != []:
-                        complete_bfs.append([node, l])
+                        result.append([node, l])
                 queue.extend(neighbors)
-        return (result, complete_bfs)
-            
-    def dfs(self):
-        pass
+        return result
     
+    def dfs_utility(self, node):
+        if node == None:
+            return
+        self.visited[node] = True
+        self.dfs_res.append(node)
+        neighbors = self.mat[node]
+        for nbr in neighbors:
+            if not self.visited[nbr]:
+                self.dfs_utility(nbr)
+        
+    def dfs(self, src):
+        self.dfs_utility(src)
+        return self.dfs_res
+
+
 def home(request):
     if request.method == 'POST':
         n_vertices = request.POST['n_vertices']
         n_vertices = int(n_vertices)
-        request.session['bfs_info'] = n_vertices
-        return HttpResponseRedirect(reverse('bfs'))
+        request.session['n_vertices'] = n_vertices
+        return HttpResponseRedirect(reverse('adj_matrix'))
     return render(request, 'main/index.htm')
 
 
-def bfs_info(request):
+def traversal(request):
     if request.method == 'POST':
         values = json.loads(request.POST['values'])
+        type_ = values['type']
         adj_mat = values['mat']
         src = int(values['src'])
         g = Graph(n_vertices=len(adj_mat))
         g.create_graph(adj_mat)
-        result, complete_bfs = g.bfs(src-1)
-        print(green, complete_bfs)
-        # g.debug_mat()
-        response = JsonResponse({'result': complete_bfs})
+        if type_ == 'bfs':
+            result = g.bfs(src-1)
+        else:
+            result = g.dfs(src-1)
+        if DEBUG:
+            print(GREEN, result)
+        response = JsonResponse({
+            'result': result
+            })
         return response
 
 
 def bfs_visual(request):
     return render(request, 'main/bfsviz.htm')
 
+def dfs_visual(request):
+    return render(request, 'main/dfsviz.htm')
 
-def bfs(request):
-    n_vertices = request.session['bfs_info']
-    if request.method == 'POST':
-        JsonResponse({'n_vertices': n_vertices, 'text': 'some blah blah'})
-    return render(request, 'main/adjmat.htm', context={'n_vertices':n_vertices, 'range':range(n_vertices)})
+def adj_matrix(request):
+    n_vertices = request.session['n_vertices']
+    return render(request, 'main/adjmat.htm', context={
+        'n_vertices':n_vertices,
+         'range':range(n_vertices)
+         })

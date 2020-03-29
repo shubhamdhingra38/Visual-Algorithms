@@ -30,16 +30,8 @@ var next = 0,
   numRoot = 0,
   currRoot;
 var visited = {};
+var timeout = 1000;
 
-function setup() {
-  setAttributes('antialias', true);
-  cnv = createCanvas(720, 400);
-  background(200);
-  cnv.position(windowWidth/4, windowHeight/4); //center
-  defaultFill = 100;
-  highlightColor = color(255, 0, 0);
-  defaultColor = color(0, 0, 0, 70);
-}
 
 
 class Vertex {
@@ -184,6 +176,7 @@ function moveSmallCircle() {
   visY = res[1];
 }
 
+
 function resetSketch(){
     clear();
     //reset stuff
@@ -241,7 +234,6 @@ function sendNext(){
 }
 
 function initBFS(res){
-  //start bfs with x as source vertex
   node1 = vertices[res[0][0]];
   numRoot = res.length;
   currRoot = 0;
@@ -249,6 +241,29 @@ function initBFS(res){
   len = result[0][1].length;
   next = 0;
   sendNext();
+}
+
+
+function dfsUtil(idx){
+  return new Promise((res, rej) => {
+    setTimeout(() => {
+      res([vertices[result[idx]], vertices[result[idx+1]]]);
+    }, timeout);
+  });
+}
+
+
+async function initDFS(res){
+  result = res;
+  let nextNodes;
+  vertices[res[0]].markVisited();
+  for(let i=0; i<res.length-1; ++i){
+    nextNodes = await dfsUtil(i);
+    node1 = nextNodes[0];
+    node2 = nextNodes[1];
+    node1.markVisited();
+    node2.markVisited();
+  }
 }
 
 function getAdjMat(){
@@ -272,6 +287,17 @@ function getAdjMat(){
     mat.push(row);
   }
   return mat;
+}
+
+
+function setup() {
+  setAttributes('antialias', true);
+  cnv = createCanvas(1280, 720);
+  background(200);
+  cnv.position(windowWidth/8, windowHeight/8); //center
+  defaultFill = 100;
+  highlightColor = color(255, 0, 0);
+  defaultColor = color(0, 0, 0, 70);
 }
 
 
