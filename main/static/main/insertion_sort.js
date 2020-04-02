@@ -1,16 +1,41 @@
 const images = [];
+const cards = [];
 let card_values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
 let groups = ['S', 'H', 'C', 'D'];
 const down_scale = 5;
-const shift_x = 70;
+const shift_x = 180;
 let max_load = 13,
     min_load = 7;
 let setLoad = false;
+let c1;
+const epsilon = 0.5;
+
+
+
+class Card {
+    constructor(xPos, yPos, img) {
+        this.xPos = xPos;
+        this.yPos = yPos;
+        this.img = img;
+        this.xTarget = -1;
+        this.yTarget = -1;
+        this.updating = false;
+    }
+    translate() {
+        this.xPos += 0.5;
+    }
+    drawCard() {
+        image(this.img.img, this.xPos, this.yPos, this.img.img.width / down_scale, this.img.img.height / down_scale);
+    }
+}
+
 
 //Source: https://stackoverflow.com/questions/2450954/how-to-randomize-shuffle-a-javascript-array
 function shuffleArray(array) {
+    //positions of cards also needs to be swapped
     var currentIndex = array.length,
         temporaryValue, randomIndex;
+    let x1, x2, y1, y2;
 
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
@@ -20,34 +45,71 @@ function shuffleArray(array) {
         currentIndex -= 1;
 
         // And swap it with the current element.
-        temporaryValue = array[currentIndex];
-        array[currentIndex] = array[randomIndex];
-        array[randomIndex] = temporaryValue;
+        swap(array, currentIndex, randomIndex);
     }
 
     return array;
 }
 
 //swap elements at specified index of the global array
-function swap(i, j) {
-    let obj = images[i];
-    images[i] = images[j];
-    images[j] = obj;
+function swap(array, i, j) {
+    let x1, x2, y1, y2;
+    x1 = array[i].xPos;
+    y1 = array[i].yPos;
+    x2 = array[j].xPos;
+    y2 = array[j].yPos;
+    let obj = array[i];
+    array[i] = array[j];
+    array[j] = obj;
+    array[j].xPos = x2;
+    array[j].yPos = y2;
+    array[i].xPos = x1;
+    array[i].yPos = y1;
 }
 
-function insertionSort(n_loaded) {
+function swapAnim(i, j) {
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            cards[i].updating = false;
+            cards[j].updating = false;
+            console.log("stopped updating");
+            resolve();
+        }, 4500);
+    });
+}
+
+
+async function insertionSort(n_loaded) {
     let j;
     for (let i = 1; i < n_loaded; ++i) {
         j = i;
-        while (j >= 1 && (images[j].face_value < images[j - 1].face_value)) {
-            swap(j, j - 1);
+        while (j >= 1 && (cards[j].img.face_value < cards[j - 1].img.face_value)) {
+            cards[j].updating = true;
+            cards[j - 1].updating = true;
+            cards[j].xTarget = cards[j - 1].xPos;
+            cards[j].yTarget = cards[j - 1].yPos;
+            cards[j - 1].xTarget = cards[j].xPos;
+            cards[j - 1].yTarget = cards[j].yPos;
+            await swapAnim(j, j - 1);
+            let obj = cards[j];
+            cards[j] = cards[j - 1];
+            cards[j - 1] = obj;
             j -= 1;
         }
     }
+    console.log("done");
 }
 
 function refreshCards() {
+    while (cards.length != 0) {
+        cards.pop();
+    }
     shuffleArray(images);
+    for (let i = 0; i < 10; ++i) {
+        img = images[i];
+        c = new Card(i * shift_x, 200, img);
+        cards.push(c);
+    }
     setLoad = true;
 }
 
@@ -79,36 +141,41 @@ function loadCards() {
     }
 }
 
-function drawCards(n_loaded) {
-    let img;
-    for (let i = 0; i < n_loaded; ++i) {
-        img = images[i];
-        image(img.img, i * shift_x, 0, img.img.width / down_scale, img.img.height / down_scale);
-    }
-}
-
 function preload() {
     //to avoid asynchronous callbacks
     loadCards();
 }
 
 function setup() {
-    createCanvas(1366, 768);
+    let cnv = createCanvas(1366, 768);
     background(200);
-
-    // insertionSort(10);
-    // for (let i = 0; i < 10; ++i) {
-    //     img = images[i];
-    //     // tint(255, 0, 0, 50);
-    //     image(img.img, i * shift_x, 300, img.img.width / down_scale, img.img.height / down_scale);
-    // }
+    let img, c;
+    shuffleArray(images);
+    for (let i = 0; i < 10; ++i) {
+        img = images[i];
+        c = new Card(i * shift_x, 200, img);
+        cards.push(c);
+    }
 }
 
 function draw() {
-    if (setLoad) {
-        background(200); //reset background
-        setLoad = false;
-        drawCards(10);
+    let c;
+    background(200);
+    for (let i = 0; i < 10; ++i) {
+        c = cards[i];
+        if (c.updating) {
+            if (abs(c.xTarget - c.xPos) <= epsilon) {
+                c.updating = false;
+                c.xPos = c.xTarget; //snap to target
+            } else {
+                if (c.xTarget < c.xPos) {
+                    cards[i].xPos -= 1;
+                } else {
+                    cards[i].xPos += 1;
+                }
+            }
+        }
+        c.drawCard();
     }
 }
 
