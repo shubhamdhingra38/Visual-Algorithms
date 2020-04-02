@@ -4,12 +4,11 @@ let card_values = ['A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 
 let groups = ['S', 'H', 'C', 'D'];
 const down_scale = 5;
 const shift_x = 180;
-let max_load = 13,
-    min_load = 7;
-let setLoad = false;
 let c1;
-const epsilon = 0.5;
-
+const epsilon = 1.0;
+const n_cards = 7;
+let anyUpdating = false;
+const speed_x = 2;
 
 
 class Card {
@@ -21,9 +20,6 @@ class Card {
         this.yTarget = -1;
         this.updating = false;
     }
-    translate() {
-        this.xPos += 0.5;
-    }
     drawCard() {
         image(this.img.img, this.xPos, this.yPos, this.img.img.width / down_scale, this.img.img.height / down_scale);
     }
@@ -34,8 +30,7 @@ class Card {
 function shuffleArray(array) {
     //positions of cards also needs to be swapped
     var currentIndex = array.length,
-        temporaryValue, randomIndex;
-    let x1, x2, y1, y2;
+        randomIndex;
 
     // While there remain elements to shuffle...
     while (0 !== currentIndex) {
@@ -69,12 +64,12 @@ function swap(array, i, j) {
 
 function swapAnim(i, j) {
     return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            cards[i].updating = false;
-            cards[j].updating = false;
-            console.log("stopped updating");
-            resolve();
-        }, 4500);
+        (function waitForFoo() {
+            if (!anyUpdating) {
+                return resolve();
+            }
+            setTimeout(waitForFoo, 300);
+        })();
     });
 }
 
@@ -86,10 +81,9 @@ async function insertionSort(n_loaded) {
         while (j >= 1 && (cards[j].img.face_value < cards[j - 1].img.face_value)) {
             cards[j].updating = true;
             cards[j - 1].updating = true;
+            anyUpdating = true;
             cards[j].xTarget = cards[j - 1].xPos;
-            cards[j].yTarget = cards[j - 1].yPos;
             cards[j - 1].xTarget = cards[j].xPos;
-            cards[j - 1].yTarget = cards[j].yPos;
             await swapAnim(j, j - 1);
             let obj = cards[j];
             cards[j] = cards[j - 1];
@@ -105,17 +99,15 @@ function refreshCards() {
         cards.pop();
     }
     shuffleArray(images);
-    for (let i = 0; i < 10; ++i) {
+    for (let i = 0; i < n_cards; ++i) {
         img = images[i];
         c = new Card(i * shift_x, 200, img);
         cards.push(c);
     }
-    setLoad = true;
 }
 
 function sortCards() {
-    insertionSort(10);
-    setLoad = true;
+    insertionSort(n_cards);
 }
 
 //path is variable for the path used for loading the images using Django's static tag
@@ -148,30 +140,32 @@ function preload() {
 
 function setup() {
     let cnv = createCanvas(1366, 768);
-    background(200);
+    // background(200);
     let img, c;
     shuffleArray(images);
-    for (let i = 0; i < 10; ++i) {
+    for (let i = 0; i < n_cards; ++i) {
         img = images[i];
         c = new Card(i * shift_x, 200, img);
         cards.push(c);
     }
 }
 
+
 function draw() {
     let c;
-    background(200);
-    for (let i = 0; i < 10; ++i) {
+    clear();
+    for (let i = 0; i < n_cards; ++i) {
         c = cards[i];
         if (c.updating) {
             if (abs(c.xTarget - c.xPos) <= epsilon) {
                 c.updating = false;
+                anyUpdating = false;
                 c.xPos = c.xTarget; //snap to target
             } else {
                 if (c.xTarget < c.xPos) {
-                    cards[i].xPos -= 1;
+                    cards[i].xPos -= speed_x;
                 } else {
-                    cards[i].xPos += 1;
+                    cards[i].xPos += speed_x;
                 }
             }
         }
