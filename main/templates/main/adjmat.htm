@@ -1,6 +1,7 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,23 +20,24 @@
         <div class="adj">
             <br>
             {% for v1 in range %}
-                {{ v1 }}
-                {% for v2 in range %}
-                    {% if v1 == 0 %}
-                    <span class="input_wrapper">
-                        <label for="field{{v1}}{{v2}}">{{ v2 }} </label>
-                        <input type="text" name="field{{v1}}{{v2}}" size="3">
-                    </span>
-                    {% else %}
-                        <input type="text" name="field{{v1}}{{v2}}" size="3">
-                    {% endif %}
-                {% endfor %}
-                <br>
+            {{ v1 }}
+            {% for v2 in range %}
+            {% if v1 == 0 %}
+            <span class="input_wrapper">
+                <label for="field{{v1}}{{v2}}">{{ v2 }} </label>
+                <input type="text" name="field{{v1}}{{v2}}" size="3">
+            </span>
+            {% else %}
+            <input type="text" name="field{{v1}}{{v2}}" size="3">
+            {% endif %}
             {% endfor %}
-        <br>
+            <br>
+            {% endfor %}
+            <br>
         </div>
         <input type="submit" onclick="" value="BFS">
     </form>
     <p id="result" style="color:green"></p>
 </body>
+
 </html>

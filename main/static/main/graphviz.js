@@ -62,7 +62,7 @@ class Vertex {
     textSize(this.size);
     text(this.counter, this.xPos, this.yPos);
   }
-  markVisited(){
+  markVisited() {
     this.visitedFill = 150;
   }
 }
@@ -95,7 +95,7 @@ function isOverlapping(v) {
 
 function mousePressed() {
   //if mouse inside canvas
-  if(!(mouseX >= radCircle/2 && mouseX <= width-radCircle/2 && mouseY >= radCircle/2 && mouseY <= height-radCircle/2)){
+  if (!(mouseX >= radCircle / 2 && mouseX <= width - radCircle / 2 && mouseY >= radCircle / 2 && mouseY <= height - radCircle / 2)) {
     return; //outside, don't draw anaything
   }
   if (mouseButton === LEFT) {
@@ -106,7 +106,7 @@ function mousePressed() {
       vertices.push(v);
     else
       counter -= 1;
-  } else if (mouseButton === CENTER) {
+  } else if (mouseButton === RIGHT) {
     //check if mouse position is inside the circle
     v = isInside();
     if (v != null) {
@@ -177,18 +177,18 @@ function moveSmallCircle() {
 }
 
 
-function resetSketch(){
-    clear();
-    //reset stuff
-    counter = 0;
-    vertices = [];
-    edges = [];
-    adjMat = {};
-    visited = {};
+function resetSketch() {
+  clear();
+  //reset stuff
+  counter = 0;
+  vertices = [];
+  edges = [];
+  adjMat = {};
+  visited = {};
 }
 
 
-function calculate(){
+function calculate() {
   visX = node1.mouseX;
   visY = node1.mouseY;
   let res = mapForward(node1.mouseX, node1.mouseY);
@@ -208,11 +208,11 @@ function calculate(){
   isVisiting = true;
 }
 
-function sendNext(){
+function sendNext() {
   // u ---> v
-  if(next == len){
+  if (next == len) {
     currRoot += 1;
-    if(currRoot == numRoot)
+    if (currRoot == numRoot)
       return;
     node1 = vertices[result[currRoot][0]];
     len = result[currRoot][1].length;
@@ -220,20 +220,19 @@ function sendNext(){
   }
   // node1 = vertices[result[next]];
   let nd = result[currRoot][1][next];
-  if(!visited[nd]){
+  if (!visited[nd]) {
     visited[nd] = true;
     node2 = vertices[result[currRoot][1][next]];
     calculate();
     next += 1;
-  }
-  else{
+  } else {
     next += 1;
     //make a recursive call, skip current vertex as it is already visited
     sendNext();
   }
 }
 
-function initBFS(res){
+function initBFS(res) {
   node1 = vertices[res[0][0]];
   numRoot = res.length;
   currRoot = 0;
@@ -244,20 +243,20 @@ function initBFS(res){
 }
 
 
-function dfsUtil(idx){
+function dfsUtil(idx) {
   return new Promise((res, rej) => {
     setTimeout(() => {
-      res([vertices[result[idx]], vertices[result[idx+1]]]);
+      res([vertices[result[idx]], vertices[result[idx + 1]]]);
     }, timeout);
   });
 }
 
 
-async function initDFS(res){
+async function initDFS(res) {
   result = res;
   let nextNodes;
   vertices[res[0]].markVisited();
-  for(let i=0; i<res.length-1; ++i){
+  for (let i = 0; i < res.length - 1; ++i) {
     nextNodes = await dfsUtil(i);
     node1 = nextNodes[0];
     node2 = nextNodes[1];
@@ -266,19 +265,18 @@ async function initDFS(res){
   }
 }
 
-function getAdjMat(){
+function getAdjMat() {
   //change from dictionary representation to N x N adjacency matrix
   let l = Object.keys(adjMat).length;
   let mat = [];
-  for(let i=1; i<=l; ++i){
+  for (let i = 1; i <= l; ++i) {
     let row = [];
-    if(adjMat[i] == null){
-      for(let j=1; j<=l; ++j)
+    if (adjMat[i] == null) {
+      for (let j = 1; j <= l; ++j)
         row.push(0);
-    }
-    else{
-      for(let j=1; j<=l; ++j){
-        if(adjMat[i].indexOf(j) != -1)
+    } else {
+      for (let j = 1; j <= l; ++j) {
+        if (adjMat[i].indexOf(j) != -1)
           row.push(1);
         else
           row.push(0);
@@ -294,7 +292,7 @@ function setup() {
   setAttributes('antialias', true);
   cnv = createCanvas(1280, 720);
   background(200);
-  cnv.position(windowWidth/8, windowHeight/8); //center
+  cnv.position(windowWidth / 8, windowHeight / 8); //center
   defaultFill = 100;
   highlightColor = color(255, 0, 0);
   defaultColor = color(0, 0, 0, 70);

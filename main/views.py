@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
-from colorama import Fore, Back 
+from colorama import Fore, Back
 import json
 from collections import defaultdict
 
@@ -15,16 +15,15 @@ class Graph:
         self.mat = defaultdict(list)
         self.visited = [False] * n_vertices
         self.dfs_res = []
-        
+
     def create_graph(self, values):
         for i in range(self.n_vertices):
             for j in range(self.n_vertices):
                 if values[i][j] == 1:
                     self.add_node(i, j)
-        
+
     def add_node(self, u, v):
         self.mat[u].append(v)
-        
 
     def bfs(self, src):
         result = []
@@ -33,7 +32,8 @@ class Graph:
             node = queue.pop(0)
             if not self.visited[node]:
                 self.visited[node] = True
-                if DEBUG: print(GREEN, node, "->", end=' ')
+                if DEBUG:
+                    print(GREEN, node, "->", end=' ')
                 neighbors = self.mat[node]
                 if len(neighbors) != 0:
                     l = []
@@ -44,7 +44,7 @@ class Graph:
                         result.append([node, l])
                 queue.extend(neighbors)
         return result
-    
+
     def dfs_utility(self, node):
         if node == None:
             return
@@ -54,7 +54,7 @@ class Graph:
         for nbr in neighbors:
             if not self.visited[nbr]:
                 self.dfs_utility(nbr)
-        
+
     def dfs(self, src):
         self.dfs_utility(src)
         return self.dfs_res
@@ -85,19 +85,25 @@ def traversal(request):
             print(GREEN, result)
         response = JsonResponse({
             'result': result
-            })
+        })
         return response
+
+
+def sorting(request):
+    return render(request, 'main/sorting.htm')
 
 
 def bfs_visual(request):
     return render(request, 'main/bfsviz.htm')
 
+
 def dfs_visual(request):
     return render(request, 'main/dfsviz.htm')
+
 
 def adj_matrix(request):
     n_vertices = request.session['n_vertices']
     return render(request, 'main/adjmat.htm', context={
-        'n_vertices':n_vertices,
-         'range':range(n_vertices)
-         })
+        'n_vertices': n_vertices,
+        'range': range(n_vertices)
+    })

@@ -1,0 +1,23 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insertion Sort</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+    <script src="{% static 'main/insertion_sort.js' %}"></script>
+</head>
+
+<body>
+    <button id="shuffle-btn">Shuffle</button>
+    <button id="sort-btn">Sort</button>
+    <script>
+        var path = "{% static 'main/images/cards' %}";
+    </script>
+
+</body>
+
+</html>
