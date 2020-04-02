@@ -66,7 +66,7 @@ def home(request):
         n_vertices = int(n_vertices)
         request.session['n_vertices'] = n_vertices
         return HttpResponseRedirect(reverse('adj_matrix'))
-    return render(request, 'main/index.htm')
+    return render(request, 'main/home.htm')
 
 
 def traversal(request):
@@ -76,8 +76,9 @@ def traversal(request):
         adj_mat = values['mat']
         src = int(values['src'])
         g = Graph(n_vertices=len(adj_mat))
+        # print(GREEN, adj_mat)
         g.create_graph(adj_mat)
-        if type_ == 'bfs':
+        if type_.lower() == 'bfs':
             result = g.bfs(src-1)
         else:
             result = g.dfs(src-1)

@@ -180,6 +180,9 @@ function moveSmallCircle() {
 function resetSketch() {
   clear();
   //reset stuff
+  node1.markVisited();
+  node2.markVisited();
+  isVisiting = false;
   counter = 0;
   vertices = [];
   edges = [];
@@ -269,13 +272,13 @@ function getAdjMat() {
   //change from dictionary representation to N x N adjacency matrix
   let l = Object.keys(adjMat).length;
   let mat = [];
-  for (let i = 1; i <= l; ++i) {
+  for (let i = 1; i <= counter; ++i) {
     let row = [];
     if (adjMat[i] == null) {
-      for (let j = 1; j <= l; ++j)
+      for (let j = 1; j <= counter; ++j)
         row.push(0);
     } else {
-      for (let j = 1; j <= l; ++j) {
+      for (let j = 1; j <= counter; ++j) {
         if (adjMat[i].indexOf(j) != -1)
           row.push(1);
         else
@@ -287,21 +290,32 @@ function getAdjMat() {
   return mat;
 }
 
+function windowResized() {
+  resizeCanvas(windowWidth / 2, windowHeight - 200);
+  resetSketch();
+  isUpdating = false;
+}
+
 
 function setup() {
   setAttributes('antialias', true);
-  cnv = createCanvas(1280, 720);
-  background(200);
-  cnv.position(windowWidth / 8, windowHeight / 8); //center
+  cnv = createCanvas(windowWidth / 2, windowHeight - 200);
+  cnv.parent('sketch-holder');
+  clear();
+  // background('rgba(0,255,0, 0.25)');
+  // cnv.position(0, 0); //center
   defaultFill = 100;
-  highlightColor = color(255, 0, 0);
-  defaultColor = color(0, 0, 0, 70);
+  highlightColor = color(255, 0, 0, 200);
+  defaultColor = color(255, 255, 255, 200);
 }
 
 
 function draw() {
-  background(200);
-
+  clear();
+  // background('rgba(0,255,0, 0.25)');
+  fill('rgba(255, 255, 255, 0.1)');
+  stroke(color(0, 255, 0, 200));
+  rect(0, 0, cnv.width, cnv.height);
   if (isVisiting) {
     if (abs(visX - node2.mouseX) <= epsilon && (visY - node2.mouseY) <= epsilon) {
       node1.markVisited();
@@ -311,7 +325,7 @@ function draw() {
     } else {
       moveSmallCircle();
       fill(0, 255, 0, 100);
-      stroke(color(0, 255, 0, 100));
+      stroke(color(0, 255, 0, 200));
       circle(visX, visY, radSmallCircle);
     }
   }

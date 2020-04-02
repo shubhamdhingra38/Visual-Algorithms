@@ -1,9 +1,9 @@
-$("document").ready(function(){
-    var type = $("p").text();
-    $("#reset-btn").on("click", function(){
+$("document").ready(function () {
+    var type = $("#identifier").text();
+    $("#reset-btn").on("click", function () {
         resetSketch();
     });
-    $("#submit-btn").on("click", function(){
+    $("#submit-btn").on("click", function () {
         var src = $("#source").val();
         var mat = getAdjMat();
         $.ajax({
@@ -17,9 +17,9 @@ $("document").ready(function(){
                 }),
                 csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
             },
-            success:function(data){
+            success: function (data) {
                 var result = data["result"];
-                if(type == 'bfs')
+                if (type.toLowerCase() == 'bfs')
                     initBFS(result);
                 else
                     initDFS(result);

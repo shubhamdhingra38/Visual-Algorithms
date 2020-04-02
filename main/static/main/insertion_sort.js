@@ -8,7 +8,8 @@ let c1;
 const epsilon = 1.0;
 const n_cards = 7;
 let anyUpdating = false;
-const speed_x = 2;
+const speed_x = 1.5;
+let xPointer = yPointer = -1;
 
 
 class Card {
@@ -21,6 +22,10 @@ class Card {
         this.updating = false;
     }
     drawCard() {
+        if (this.updating) {
+            strokeWeight(5);
+            rect(this.xPos, this.yPos, this.img.img.width / down_scale, this.img.img.height / down_scale);
+        }
         image(this.img.img, this.xPos, this.yPos, this.img.img.width / down_scale, this.img.img.height / down_scale);
     }
 }
@@ -73,11 +78,18 @@ function swapAnim(i, j) {
     });
 }
 
+function waitAndMovePointer() {
+    return new Promise((resolve, reject) => {
+        setTimeout(resolve, 1000);
+    });
+}
 
 async function insertionSort(n_loaded) {
     let j;
     for (let i = 1; i < n_loaded; ++i) {
         j = i;
+        xPointer = cards[i].xPos;
+        yPointer = cards[i].yPos;
         while (j >= 1 && (cards[j].img.face_value < cards[j - 1].img.face_value)) {
             cards[j].updating = true;
             cards[j - 1].updating = true;
@@ -90,8 +102,9 @@ async function insertionSort(n_loaded) {
             cards[j - 1] = obj;
             j -= 1;
         }
+        await waitAndMovePointer();
     }
-    console.log("done");
+    xPointer = yPointer = -1;
 }
 
 function refreshCards() {
@@ -104,6 +117,7 @@ function refreshCards() {
         c = new Card(i * shift_x, 200, img);
         cards.push(c);
     }
+    xPointer = yPointer = -1;
 }
 
 function sortCards() {
@@ -125,7 +139,7 @@ function loadCards() {
                 face_value = parseInt(card_values[i]);
             }
             let obj = {
-                'img': loadImage(path + '/' + card_values[i] + groups[j] + '.png'),
+                'img': loadImage(path + 'cards/' + card_values[i] + groups[j] + '.png'),
                 'face_value': face_value
             }
             images.push(obj);
@@ -153,7 +167,15 @@ function setup() {
 
 function draw() {
     let c;
+    strokeWeight(1);
     clear();
+    // circle(xPointer + images[0].img.width / (2 * down_scale), yPointer - 50, 30);
+    if (xPointer != -1 && yPointer != -1) {
+        strokeWeight(5);
+        stroke(color(255, 0, 0));
+        rect(xPointer, yPointer, images[0].img.width / down_scale, images[0].img.height / down_scale);
+        stroke(1);
+    }
     for (let i = 0; i < n_cards; ++i) {
         c = cards[i];
         if (c.updating) {
