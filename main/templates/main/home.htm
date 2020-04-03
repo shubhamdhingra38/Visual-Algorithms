@@ -1,51 +1,63 @@
 {% extends "main/index.htm" %}
 {% load static %}
-<!-- {% block heading %}
+{% block heading %}
 <title>Visual Algorithms</title>
-{% endblock heading %} -->
+{% endblock heading %}
 {% block body %}
 <!-- Cards -->
 <!-- Row 1 -->
-<div class="card-deck mx-4">
-  <div class="my-5 card w-100 border-primary" style="width: 100px;">
-    <img class="card-img-top" src="{% static 'main/images/BFS.png' %}" alt="">
-    <div class="card-body text-center d-flex flex-column">
-      <h3 class="card-title bg-warning">BFS</h3>
-      <p class="card-text text-muted text-left">Traverses all neighbors of a given node and then all the
-        neighbors of the traversed neighbors through Queue.</p>
-      <a href="{% url 'bfs_visual' %}" class="btn mt-auto btn-success stretched-link">Perform BFS</a>
+<div class="card-deck mx-4 ">
+  <div class="col-xs-12 col-md-12 col-lg-6">
+    <div class="my-5 card w-100 border-primary col-sm-12" style="width: 100px;">
+      <img class="card-img-top" src="{% static 'main/images/BFS.png' %}" alt="">
+      <div class="card-body text-center d-flex flex-column">
+        <h3 class="card-title bg-warning">BFS</h3>
+        <p class="card-text text-muted text-left">Traverses all neighbors of a given node and then all the
+          neighbors of the traversed neighbors through Queue.</p>
+        <a href="{% url 'bfs_visual' %}" class="btn mt-auto btn-success stretched-link">Perform BFS</a>
+      </div>
     </div>
   </div>
-  <div class="my-5 card w-100 border-primary justify-content-center" style="width: 100px;">
-    <img class="card-img-top" src="{% static 'main/images/DFS.png' %}" alt="">
-    <div class="card-body text-center d-flex flex-column">
-      <h3 class="card-title bg-warning">DFS</h3>
-      <p class="card-text text-muted text-left">Uses a stack to maintain track of traversal. All the nodes of a
-        neighboring nodes are visited before visting the other neighboring nodes. </p>
-      <a href="{% url 'dfs_visual' %}" class="btn mt-auto btn-success stretched-link">Perform DFS</a>
+  <div class="col-xs-12 col-md-12 col-lg-6">
+    <div class="my-5 card w-100 border-primary col-sm-12" style="width: 100px;">
+      <img class="card-img-top" src="{% static 'main/images/DFS.png' %}" alt="">
+      <div class="card-body text-center d-flex flex-column">
+        <h3 class="card-title bg-warning">DFS</h3>
+        <p class="card-text text-muted text-left">Uses a stack to maintain track of traversal. All the nodes of a
+          neighboring nodes are visited before visting the other neighboring nodes. </p>
+        <a href="{% url 'dfs_visual' %}" class="btn mt-auto btn-success stretched-link">Perform DFS</a>
+      </div>
+    </div>
+  </div>
+  <!-- Row 2 -->
+  <div class="card-deck mx-0 ">
+    <div class="col-xs-12 col-md-12 col-lg-6">
+      <div class="my-5 card w-100 border-primary col-sm-12" style="width: 100px">
+        <img class="card-img-top mx-auto" src="{% static 'main/images/Deck.png' %}" alt="" style="width: 50%;">
+        <div class="card-body text-center d-flex flex-column">
+          <h3 class="card-title bg-warning">Insertion Sort</h3>
+          <p class="card-text text-muted text-left">An inplace sorting algorithm which is stable. Worst Case Complexity
+            O(N<sup>2</sup>).
+            Insertion sort is a simple sorting algorithm that builds the final sorted array one item at a time. It is
+            much
+            less efficient on large lists than more advanced algorithms such as quicksort, heapsort, or merge sort.</p>
+          <a href="{% url 'sorting' %}" class="btn mt-auto btn-success stretched-link">Perform Sort</a>
+        </div>
+      </div>
+    </div>
+    <div class="col-xs-12 col-md-12 col-lg-6">
+      <div class="my-5 card w-100 border-primary col-sm-12" style="width: 100px;">
+        <img class="card-img-top mx-auto" src="{% static 'main/images/Deck.png' %}" alt="" style="width: 50%;">
+        <div class="card-body text-center d-flex flex-column">
+          <h3 class="card-title bg-warning">TBD</h3>
+          <p class="card-text text-muted text-left">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Repellat
+            quod voluptatem architecto ipsam, sit dolor? Omnis aut repellendus quia veniam libero! Voluptatibus eos nisi
+            iure ex minus debitis sit facilis? </p>
+          <a href="{% url 'dfs_visual' %}" class="btn mt-auto btn-success stretched-link">Perform DFS</a>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-<!-- Row 2 -->
-<div class="card-deck mx-4" style="top: 150%;">
-  <div class="my-5 card w-100 border-primary" style="width: 100px;">
-    <img class="card-img-top" src="{% static 'main/images/BFS.png' %}" alt="">
-    <div class=" card-body text-center d-flex flex-column">
-      <h3 class="card-title bg-warning">BFS</h3>
-      <p class="card-text text-muted text-left">Traverses all neighbors of a given node and then all the
-        neighbors of the traversed neighbors through Queue.</p>
-      <a href="#" class="btn mt-auto btn-success stretched-link">Perform BFS</a>
-    </div>
-  </div>
-  <div class="my-5 card w-100 border-primary justify-content-center" style="width: 100px;">
-    <img class="card-img-top" src="{% static 'main/images/DFS.png' %}" alt="">
-    <div class=" card-body text-center d-flex flex-column">
-      <h3 class="card-title bg-warning">DFS</h3>
-      <!-- <h5 class="bf-primary">Thi</h3> -->
-      <p class="card-text text-muted text-left">Uses a stack to maintain track of traversal. All the nodes of a
-        neighboring nodes are visited before visting the other neighboring nodes. </p>
-      <a href="#" class="btn mt-auto btn-success stretched-link w-10">Perform DFS</a>
-    </div>
-  </div>
-</div>
+
 {% endblock body %}

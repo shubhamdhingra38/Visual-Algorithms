@@ -33,6 +33,9 @@ var visited = {};
 var timeout = 1000;
 
 
+//speedup
+p5.disableFriendlyErrors = true; // disables FES
+
 
 class Vertex {
   constructor(xPos, yPos) {
@@ -346,3 +349,12 @@ function draw() {
   //TODO
   //debug info, useful errors to users such as where node cannot be placed
 }
+
+
+//jquery
+//source: https://stackoverflow.com/questions/28062979/disable-right-click-on-specific-div-or-class
+$("document").ready(function () {
+  $('#sketch-holder').bind('contextmenu', function (e) {
+    return false;
+  });
+});

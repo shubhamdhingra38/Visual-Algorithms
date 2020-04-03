@@ -102,6 +102,10 @@ def dfs_visual(request):
     return render(request, 'main/dfsviz.htm')
 
 
+def conv_hull(request):
+    return render(request, 'main/conv.htm')
+
+
 def adj_matrix(request):
     n_vertices = request.session['n_vertices']
     return render(request, 'main/adjmat.htm', context={

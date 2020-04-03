@@ -24,6 +24,8 @@ class Card {
     drawCard() {
         if (this.updating) {
             strokeWeight(5);
+            stroke(color(0, 255, 0, 200));
+            noFill();
             rect(this.xPos, this.yPos, this.img.img.width / down_scale, this.img.img.height / down_scale);
         }
         image(this.img.img, this.xPos, this.yPos, this.img.img.width / down_scale, this.img.img.height / down_scale);
@@ -157,6 +159,7 @@ function setup() {
     // background(200);
     let img, c;
     shuffleArray(images);
+    cnv.parent('sketch-holder');
     for (let i = 0; i < n_cards; ++i) {
         img = images[i];
         c = new Card(i * shift_x, 200, img);
@@ -172,7 +175,8 @@ function draw() {
     // circle(xPointer + images[0].img.width / (2 * down_scale), yPointer - 50, 30);
     if (xPointer != -1 && yPointer != -1) {
         strokeWeight(5);
-        stroke(color(255, 0, 0));
+        stroke(color(255, 0, 0, 150));
+        noFill();
         rect(xPointer, yPointer, images[0].img.width / down_scale, images[0].img.height / down_scale);
         stroke(1);
     }

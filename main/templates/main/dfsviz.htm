@@ -1,9 +1,42 @@
-{% extends "main/base.htm" %}
+{% extends "main/index.htm" %}
+{% load static %}
 
-{% block head %}
-<title>DFS</title>
-{% endblock head %}
+{% block heading %}
+<title>BFS</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+<script src="{% static 'main/graphviz.js' %}"></script>
+<script src="{% static 'main/perform.js' %}"></script>
+{% endblock heading %}
 
 {% block body %}
-<p hidden>DFS</p>
+<div class="row">
+    <div class="col">
+        <div id="sketch-holder">
+            <p id="identifier" class="text-muted">DFS</p>
+            <p class="text-muted">Click to places vertices.</p>
+        </div>
+    </div>
+    <div class="col">
+        <div class="input-info mt-5">
+            <form method="POST" id="submit-form">
+                {% csrf_token %}
+                <input type="text" name="source" id="source" placeholder="Source Vertex">
+            </form>
+            <input class="my-2 btn btn-success" type="button" name="submit-btn" id="submit-btn" value="Submit">
+            <input class="mx-1 my-2 btn btn-secondary" type="button" name="reset-btn" id="reset-btn" value="Reset">
+        </div>
+        <div class="vertical-center">
+            <h5 id="information" class="text-muted">Lorem ipsum dolor sit amet consectetur adipisicing
+                elit. Ipsam
+                aliquam maiores ex
+                repellat harum, dolorum
+                quae vel veniam? Mollitia veritatis adipisci nesciunt delectus laborum quia, sunt earum quos in!
+                Aspernatur odio aliquam sunt praesentium incidunt neque molestiae? Accusantium obcaecati nam, autem,
+                tempora a error officiis nihil hic sed maiores cum.</h5>
+        </div>
+    </div>
+</div>
+
+
 {% endblock body %}

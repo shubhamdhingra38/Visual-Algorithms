@@ -1,0 +1,22 @@
+{% extends "main/index.htm" %}
+{% load static %}
+
+{% block heading %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+<script src="{% static 'main/conv_hull.js' %}"></script>
+<title>Convex Hull</title>
+{% endblock heading %}
+
+{% block body %}
+<div class="slidecontainer my-3">
+    <label for="myRange" class="text-muted">Number of Points</label>
+    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+    <button id="btn-start" class="btn btn-success btn-sm ml-3">Start</button>
+</div>
+<br>
+<br>
+<div id="sketch-holder">
+
+</div>
+{% endblock body %}
