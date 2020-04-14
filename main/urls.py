@@ -16,7 +16,8 @@ Including another URLconf
 from django.urls import path
 from .views import (
     home, adj_matrix, traversal, bfs_visual,
-    dfs_visual, sorting, conv_hull)
+    dfs_visual, sorting, conv_hull,
+    dijkstra)
 
 
 urlpatterns = [
@@ -26,5 +27,6 @@ urlpatterns = [
     path('dfs/visual/', dfs_visual, name='dfs_visual'),
     path('bfs/visual/', bfs_visual, name='bfs_visual'),
     path('sorting/', sorting, name='sorting'),
-    path('convhull/', conv_hull, name='convex_hull')
+    path('convhull/', conv_hull, name='convex_hull'),
+    path('dijkstra/', dijkstra, name='dijkstra')
 ]

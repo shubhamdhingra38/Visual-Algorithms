@@ -105,6 +105,9 @@ def dfs_visual(request):
 def conv_hull(request):
     return render(request, 'main/conv.htm')
 
+def dijkstra(request):
+    return render(request, 'main/dijkstra.htm')
+
 
 def adj_matrix(request):
     n_vertices = request.session['n_vertices']
