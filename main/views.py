@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse, HttpResponseRedirect, JsonResponse
 from django.urls import reverse
+from django.core.files.storage import FileSystemStorage
 from colorama import Fore, Back
 import json
 from collections import defaultdict
+import os
 
 DEBUG = True
 GREEN = Fore.GREEN
@@ -76,7 +78,6 @@ def traversal(request):
         adj_mat = values['mat']
         src = int(values['src'])
         g = Graph(n_vertices=len(adj_mat))
-        # print(GREEN, adj_mat)
         g.create_graph(adj_mat)
         if type_.lower() == 'bfs':
             result = g.bfs(src-1)
@@ -108,6 +109,19 @@ def conv_hull(request):
 def dijkstra(request):
     return render(request, 'main/dijkstra.htm')
 
+
+def convolution_process(request):
+    return render(request, 'main/convprocess.htm')
+
+
+def convolution(request):
+    if request.method == 'POST':
+        img_file = request.FILES['img-upload']
+        fs = FileSystemStorage(location='./data/')
+        fs.save(img_file.name, img_file)
+        return HttpResponseRedirect(reverse('conv_process'))
+    else:
+        return render(request, 'main/convolution.htm')
 
 def adj_matrix(request):
     n_vertices = request.session['n_vertices']

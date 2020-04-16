@@ -17,7 +17,7 @@ from django.urls import path
 from .views import (
     home, adj_matrix, traversal, bfs_visual,
     dfs_visual, sorting, conv_hull,
-    dijkstra)
+    dijkstra, convolution, convolution_process)
 
 
 urlpatterns = [
@@ -28,5 +28,7 @@ urlpatterns = [
     path('bfs/visual/', bfs_visual, name='bfs_visual'),
     path('sorting/', sorting, name='sorting'),
     path('convhull/', conv_hull, name='convex_hull'),
-    path('dijkstra/', dijkstra, name='dijkstra')
+    path('dijkstra/', dijkstra, name='dijkstra'),
+    path('convolution/', convolution, name='convolution'),
+    path('convolution/process', convolution_process, name='conv_process')
 ]
