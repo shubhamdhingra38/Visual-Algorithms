@@ -107,7 +107,7 @@ def dfs_visual(request):
 
 
 def conv_hull(request):
-    return render(request, 'main/conv.htm')
+    return render(request, 'main/conv_hull.htm')
 
 def dijkstra(request):
     return render(request, 'main/dijkstra.htm')

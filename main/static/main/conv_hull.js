@@ -35,7 +35,7 @@ function crossProduct(a, b, c) {
 
 function centerCanvas() {
     let x = (windowWidth - width) / 2;
-    let y = (windowHeight - height + 150) / 2;
+    let y = 10;
     cnv.position(x, y);
 }
 
@@ -65,9 +65,13 @@ function setPoints() {
     q = (p + 1) % n_points; //pick the next point as candidate
 }
 
+function windowResized() {
+
+}
+
+
 function setup() {
     cnv = createCanvas(windowWidth, windowHeight - 200);
-    let x, y;
     cnv.parent('sketch-holder');
     centerCanvas();
 }

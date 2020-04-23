@@ -43,9 +43,9 @@ const sharpen = [
 ];
 
 const gaussian_blur = [
-  [1/16, 2/16, 1/16],
-  [2/16, 4/16, 2/16],
-  [1/16, 2/16, 1/16]
+  [1 / 16, 2 / 16, 1 / 16],
+  [2 / 16, 4 / 16, 2 / 16],
+  [1 / 16, 2 / 16, 1 / 16]
 ];
 
 let kernel = identity_kernel;
@@ -57,21 +57,20 @@ function preload() {
   //downscale image to fit the size
 }
 
-function downScaleImage(){
+function downScaleImage() {
 
   let aspectRatio;
 
   //downscale image
-  aspectRatio = img.width/img.height;
+  aspectRatio = img.width / img.height;
 
-  if(img.width > windowWidth || img.height > windowHeight){
-    if(aspectRatio > 1){
+  if (img.width > windowWidth || img.height > windowHeight) {
+    if (aspectRatio > 1) {
       //width is more
-      let newWidth = windowWidth/2;
+      let newWidth = windowWidth / 2;
       let newHeight = (img.height * newWidth) / img.width;
       img.resize(newWidth, newHeight);
-    }
-    else{
+    } else {
       //height is more
       let newHeight = windowHeight;
       let newWidth = (img.width * newHeight) / img.height;
@@ -83,11 +82,11 @@ function downScaleImage(){
 }
 
 function setup() {
-  cnv = createCanvas(img.width, img.height-100);
+  cnv = createCanvas(img.width, img.height - 100);
   cnv.parent("my-sketch");
   let x = (windowWidth - width) / 2;
   let y = (windowHeight - height) / 2;
-  cnv.position(windowWidth/6, 20);
+  cnv.position(windowWidth / 6, 20);
   // turn off HPDI displays (like retina)
   pixelDensity(1);
   dest = createImage(w, w);
@@ -105,7 +104,7 @@ function setup() {
     }
   }
 
-  
+
   downScaleImage();
 }
 
@@ -131,8 +130,8 @@ function draw() {
 
 
   //the mouse must be inside image boundaries
-  if(isMouseInside(0, img.width - (xend-xstart),
-    0, img.height - (yend-ystart))){
+  if (isMouseInside(0, img.width - (xend - xstart),
+      0, img.height - (yend - ystart))) {
     for (let x = 0; x < dest.width; x++) {
       for (let y = 0; y < dest.height; y++) {
         let result = convolution(img, x + xstart, y + ystart, kernel, kernelsize);
@@ -155,7 +154,7 @@ function draw() {
   }
 }
 
-function updateFilter(new_filter){
+function updateFilter(new_filter) {
   use_custom = true;
   kernel = new_filter;
 }
@@ -218,81 +217,74 @@ function findMax(img, xstart, ystart, skip) {
   return brightest;
 }
 
-function windowResized(){
+function windowResized() {
   downScaleImage();
-  resizeCanvas(img.width, img.height-100);
+  resizeCanvas(img.width, img.height - 100);
   cnv.position(20, 20);
   cnv_w = cnv.width;
   cnv_h = cnv.height;
 }
 
 //jquery
-$(document).ready(function(){
+$(document).ready(function () {
 
   //for kernel radio button input
-  $('input[type=radio][name=kernel]').change(function() {
-    if(this.value == "sharpen"){
+  $('input[type=radio][name=kernel]').change(function () {
+    if (this.value == "sharpen") {
       kernel = sharpen;
-    }
-    else if(this.value == "edge-detection"){
+    } else if (this.value == "edge-detection") {
       kernel = edge_detection;
-    }
-    else{
+    } else {
       kernel = identity_kernel;
     }
-    
+
   });
 
   //for responsiveness
-  $( window ).resize(function() {
-    console.log('resized');
-    console.log(cnv.width, cnv.height);
+  $(window).resize(function () {
     $('#my-sketch').css("width", cnv.width);
     $('#my-sketch').css("height", cnv.height + 40);
   });
 
-  $('#custom-filter').on('submit', function(e) {
+  $('#custom-filter').on('submit', function (e) {
     e.preventDefault();
     $.ajax({
-        url : $(this).attr('action'),
-        type: "GET",
-        data: $(this).serialize(),
-        success: function (data) {
-          let newFilter = [];
-          let val;
-          let invalid = false;
-          for(let i=0; i<3; ++i){
-            let arr = [];
-            if(invalid){
+      url: $(this).attr('action'),
+      type: "GET",
+      data: $(this).serialize(),
+      success: function (data) {
+        let newFilter = [];
+        let val;
+        let invalid = false;
+        for (let i = 0; i < 3; ++i) {
+          let arr = [];
+          if (invalid) {
+            break;
+          }
+          for (let j = 0; j < 3; ++j) {
+            let field = "field" + i + j;
+            val = parseInt(jQuery('input[name=' + field + ']').val());
+            if (isNaN(val)) {
+              invalid = true;
               break;
+            } else if (!(val >= 0 && val <= 1)) {
+              invalid = true;
+              break;
+            } else {
+              arr.push(val);
             }
-            for(let j=0; j<3; ++j){
-              let field = "field"+i+j;
-              val = parseInt(jQuery('input[name=' + field + ']').val());
-              if(isNaN(val)){
-                invalid = true;
-                break;
-              }
-              else if(!(val >= 0 && val <= 1)){
-                invalid = true;
-                break;
-              }
-              else{
-                arr.push(val);
-              }
-            }
-            newFilter.push(arr);
           }
-          if(!invalid){
-            updateFilter(newFilter);
-          }
-          else{
-            alert("Invalid values for custom filter!");
-          }
-        },
-        error: function (jXHR, textStatus, errorThrown) {
-            alert(errorThrown);
+          newFilter.push(arr);
         }
+        if (!invalid) {
+          updateFilter(newFilter);
+        } else {
+          alert("Invalid values for custom filter!");
+        }
+      },
+      error: function (jXHR, textStatus, errorThrown) {
+        alert(errorThrown);
+      }
     });
   });
 })

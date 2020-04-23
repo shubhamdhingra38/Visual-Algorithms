@@ -1,20 +1,36 @@
 {% extends "main/index.htm" %}
 {% load static %}
 {% block heading %}
-    <title>BFS</title>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
-    <script src="{% static 'main/prims_MST.js' %}"></script>
-    <script src="{% static 'main/utils.js' %}"></script>
+<title>BFS</title>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+<script src="{% static 'main/prims_MST.js' %}"></script>
+<script src="{% static 'main/utils.js' %}"></script>
 {% endblock heading %}
 
 {% block body %}
 
 
 <div class="mt-3">
-    <p class="text-info">Prim's is a greedy algorithm that finds a minimum spanning tree for a weighted undirected graph.</p>
-    <p class="text-secondary">It finds a subset of the edges that forms a tree that includes every vertex, where the total weight of all the edges in the tree is minimized. The algorithm operates by building this tree one vertex at a time, from an arbitrary starting vertex, at each step adding the cheapest possible connection from the tree to another vertex.</p>
+    <p class="text-info">Prim's is a greedy algorithm that finds a minimum spanning tree for a weighted undirected
+        graph.</p>
+    <p class="text-secondary">It finds a subset of the edges that forms a tree that includes every vertex, where the
+        total weight of all the edges in the tree is minimized. The algorithm operates by building this tree one vertex
+        at a time, from an arbitrary starting vertex, at each step adding the cheapest possible connection from the tree
+        to another vertex.</p>
 </div>
+
 <div id="sketch-holder" style="position: relative; height: 110vh">
 </div>
+
+<style>
+    .text-info {
+        font-size: 1.10rem;
+    }
+
+    .text-secondary {
+        font-size: 1.0rem;
+    }
+</style>
+
 {% endblock body %}
