@@ -2,15 +2,25 @@ let vertices = [];
 let edges = [];
 let nodeToJoin = null;
 let actualPos;
+
 const radCircle = 25;
+
+let done = false;
+
 let length = 0;
 let indexVertexHighlight = -1,
   indexEdgeHighlight;
-const timeout = 2000;
+
+const timeout = 500;
+
 let flag = false;
+
 let parent = []; //keep track of the path for printing the shortest path
 let highlightedEdges = [];
 let srcToV, edgeWt, currDist;
+
+const LEGEND_HEIGHT = 100,
+  LEGEND_WIDTH = 200; //height, width of the legend box at bottom
 
 //leaflet map code
 let myMap;
@@ -24,8 +34,6 @@ const options = {
 }
 
 
-
-//----------------------
 function isInside() {
   //returns null if none of the circles satisfy, otherwise the Vertex object which does
   for (var i = 0; i < vertices.length; ++i) {
@@ -86,7 +94,6 @@ function findEdge(u, v) {
     }
   }
 }
-//----------------------
 
 
 class Graph {
@@ -116,12 +123,10 @@ class Graph {
   }
 
   printAdjMat() {
-    console.log("Dimensions are:", this.adjMat.length, "x", this.adjMat[0].length);
     for (let i = 0; i < this.n_vertices; ++i) {
       console.log(this.adjMat[i]);
     }
   }
-
 }
 
 class Dijkstra {
@@ -174,7 +179,6 @@ class Dijkstra {
       //for each neighbor of u
       for (let v = 0; v < this.V; ++v) {
         r = await highlightUtil(1000);
-        console.log(r);
         indexEdgeHighlight = findEdge(u, v);
         srcToV = this.distances[u];
         edgeWt = this.graph.adjMat[u][v];
@@ -190,6 +194,7 @@ class Dijkstra {
     }
     indexEdgeHighlight = -1; //reset
     highlightedEdges = [];
+    done = true;
   }
 }
 
@@ -220,17 +225,53 @@ class Vertex {
 }
 
 
-
-function setup() {
-  canvas = createCanvas(windowWidth, windowHeight);
-  canvas.parent('sketch-holder');
-  myMap = mappa.tileMap(options);
-  myMap.overlay(canvas);
+function windowResized() {
+  //clear everything
+  vertices = [];
+  edges = [];
+  parent = [];
+  nodeToJoin = null;
 }
 
 
+function setup() {
+  canvas = createCanvas(windowWidth - 50, windowHeight);
+  canvas.parent('sketch-holder');
+  myMap = mappa.tileMap(options);
+  myMap.overlay(canvas);
+
+  //for legend
+  rectX1 = 60;
+  rectY1 = LEGEND_HEIGHT + 5;
+  rectX2 = LEGEND_WIDTH;
+  rectY2 = LEGEND_HEIGHT + 10;
+}
+
+function drawLegend(x, y, color, weight, name, size = 14, type = 'circle') {
+  let posX = rectX1 + 20 + (250 * x);
+  let posY = LEGEND_HEIGHT + 20 + (30 * y);
+  push();
+  stroke(color);
+  strokeWeight(weight);
+  if (type == 'line') {
+    line(posX - 8, posY + 10, posX + 8, posY - 10);
+  } else {
+    fill(color);
+    circle(posX, posY, 10);
+  }
+  fill(200);
+  textSize(size);
+  noStroke();
+  text(name, posX + 16, posY + 7);
+  pop();
+}
+
 
 function setUpGraph() {
+  if (vertices.length < 2 || edges.length < 1) {
+    return; //invalid input
+  }
+  done = false;
   let g = new Graph(length);
   for (let i = 0; i < edges.length; ++i) {
     g.addEdgeWeighted(edges[i][0].number, edges[i][1].number, parseFloat(edges[i][2]));
@@ -242,15 +283,20 @@ function setUpGraph() {
 
 
 
-async function showShortestPath(v){
-    //shows the shortest path from source vertex to entered vertex v
-    let currVertex = v;
-    let r;
-    while(parent[currVertex] != -1){
-        highlightedEdges.push([currVertex, parent[currVertex]]);
-        r = highlightUtil(1000);
-        currVertex = parent[currVertex];
-    }
+async function showShortestPath(v) {
+  //shows the shortest path from source vertex to entered vertex v
+  v -= 1;
+  if (v >= vertices.length || v < 0 || isNaN(v) || v >= parent.length) {
+    return; //invalid input
+  }
+  let currVertex = v;
+  let r;
+  while (parent[currVertex] != -1) {
+    console.log(parent[currVertex]);
+    highlightedEdges.push([currVertex, parent[currVertex]]);
+    r = highlightUtil(1000);
+    currVertex = parent[currVertex];
+  }
 }
 
 
@@ -266,7 +312,7 @@ function mousePressed() {
     position = myMap.pixelToLatLng(mouseX, mouseY);
     let v = new Vertex(position.lat, position.lng, length);
     length++;
-    if(!isOverlapping(v)){
+    if (!isOverlapping(v)) {
       vertices.push(v);
     }
   } else if (mouseButton == RIGHT) {
@@ -303,8 +349,9 @@ function draw() {
       if (flag) {
         stroke(color(0, 0, 0));
         fill(0);
-        textSize(14);
-        text(srcToV.toFixed(2) + " + " + edgeWt.toFixed(2) + " < " + currDist.toFixed(2), width-200, 50);
+        textSize(20);
+        text("Found shorter path", width - 500, 20);
+        text(srcToV.toFixed(2) + " + " + edgeWt.toFixed(2) + " < " + currDist.toFixed(2), width - 500, 50);
         stroke(0);
       } else {
         stroke(color(255, 0, 0));
@@ -348,18 +395,26 @@ function draw() {
 
     }
   }
+  //legend
+  fill(0, 0, 0, 200);
+  rect(rectX1, rectY1, rectX2, rectY2);
+  drawLegend(0, 0, color(0, 0, 255, 255), 1, "Source Vertex");
+  drawLegend(0, 1, color(0, 0, 0, 150), 2, "Other Vertices");
+  drawLegend(0, 2, color(255, 255, 51, 200), 3, "Shortest Path from Source", 13.5, 'line');
 }
 
 //JQuery
-$(document).ready(function() {
-  $('#sketch-holder').bind('contextmenu', function(e) {
+$(document).ready(function () {
+  $('#sketch-holder').bind('contextmenu', function (e) {
     return false;
   });
   $("#start-btn").click(() => {
-    console.log("Setting up graph");
     setUpGraph();
   });
   $("#destination-btn").click(() => {
+    if (!done) {
+      return;
+    }
     highlightedEdges = [];
     clear();
     var dest = $("#destination").val();
