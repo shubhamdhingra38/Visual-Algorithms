@@ -1,0 +1,23 @@
+{% extends "main/index.htm" %}
+{% load static %}
+{% block heading %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <title>Quick Sort</title>
+    <script src="{% static 'main/utils.js' %}"></script>
+    <script src="{% static 'main/quicksort.js' %}"></script>
+
+{% endblock heading %}
+
+{% block body %}
+    <div class="info">
+        <br>
+        <p class="text-info my-2">Quicksort is an efficient sorting algorithm.</p>
+        <br>
+        <p class="text-muted">It is a <mark>divide-and-conquer</mark> algorithm. It works by selecting a 'pivot' element from the array and partitioning the other elements into two sub-arrays, according to whether they are less than or greater than the pivot. The sub-arrays are then sorted recursively. This can be done in-place, requiring small additional amounts of memory to perform the sorting.
+        <p class="text-white">On average, the algorithm takes O(nlogn) comparisons to sort n items. In the <mark>worst case</mark>, it takes <mark>O(n&sup2).</mark></p>
+    </div>
+    <div id="sketch-holder" style="position: relative; height: 110vh">
+    </div>
+{% endblock body %}

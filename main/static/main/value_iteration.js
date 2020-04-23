@@ -3,10 +3,16 @@ let start, end;
 const gridSize = 5; //n x n grid
 
 
+let cnv; //canvas
+let sliderGamma, para, btn;
+
 let solutionFound;
 
-let sliderGamma;
+let rectX1, rectY1, rectX2, rectY2;
+
+
 let done = false;
+
 
 //default end at top left start at bottom right
 end = {
@@ -309,13 +315,37 @@ function initiateEnvironment() {
   }
 }
 
+function startButton(){
+    initiateEnvironment();
+    valueIteration();
+}
+
 function setup() {
-  let cnv = createCanvas(400, 400);
+  cnv = createCanvas(400, 400);
+  cnv.parent('sketch-holder');
   cnv.position(50, 50);
+
   initiateEnvironment();
+  
   sliderGamma = createSlider(0, 100, 50); //for gamma
-  sliderGamma.position(50, 10);
+  sliderGamma.position(cnv.position().x, cnv.position().y - 30);
+  sliderGamma.parent('sketch-holder');
   sliderGamma.style('width', '80px');
+
+  fill(0, 255, 0);
+  para = createP("Gamma");
+  para.style('color', color(0, 255, 0, 200));
+  para.parent('sketch-holder');
+  para.position(sliderGamma.position().x, sliderGamma.position().y - 25);
+
+  addStartButton(cnv, startButton);
+}
+
+function windowResized() {
+  cnv.position(50, 50);
+  sliderGamma.position(cnv.position().x, cnv.position().y - 30);
+  para.position(sliderGamma.position().x, sliderGamma.position().y - 25);
+  btn.position(cnv.position().x + 100, cnv.position().y - 45);
 }
 
 function mousePressed() {
@@ -363,7 +393,9 @@ function mousePressed() {
 }
 
 function draw() {
-  background(220);
+  initialDraw();
+  fill(0);
+  stroke(0);
   for (let i = 0; i < cells.length; ++i) {
     cells[i].display();
   }
@@ -382,7 +414,6 @@ function draw() {
     let currCell = Object.assign({}, start);
     while (currCell.x != end.x || currCell.y != end.y) {
       let idx = agent.getIndex(currCell);
-      console.log(idx);
       if(idx < 0 || idx >= gridSize * gridSize){
         solutionFound = false;
         for(let i=0; i<cells.length; ++i){
@@ -419,11 +450,18 @@ function draw() {
   cells[startIdx].highlightColor = color(255, 0, 0, 50);
   cells[endIdx].highlight = true;
   cells[endIdx].highlightColor = color(0, 255, 0, 50);
+
 }
 
-$(document).ready(function() {
-  $("#start-btn").click(() => {
-    initiateEnvironment();
-    valueIteration();
+// $(document).ready(function() {
+//   $("#start-btn").click(() => {
+//     initiateEnvironment();
+//     valueIteration();
+//   });
+// });
+
+$("document").ready(function () {
+  $('#sketch-holder').bind('contextmenu', function (e) {
+    return false;
   });
 });

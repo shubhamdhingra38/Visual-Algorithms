@@ -1,0 +1,35 @@
+{% extends "main/index.htm" %}
+{% load static %}
+{% block heading %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <title>Genetic Algorithm</title>
+    <script src="{% static 'main/utils.js' %}"></script>
+    <script src="{% static 'main/genetic_algorithm.js' %}"></script>
+
+{% endblock heading %}
+
+{% block body %}
+
+<div class="info">
+    <p class="text-info" style="font-size: small;">A genetic algorithm (GA) is a metaheuristic inspired by the process of natural selection that belongs to the larger class of evolutionary algorithms (EA). Genetic algorithms are commonly used to generate high-quality solutions to optimization and search problems by relying on biologically inspired operators such as mutation, crossover and selection.</p>
+    <span class="text-muted" style="font-size: smaller;">A typical genetic algorithm requires:
+        <br>
+        <ul>
+            <li>a genetic representation of the solution domain,</li>
+            <li>a fitness function to evaluate the solution domain.</li>
+        </ul>
+        </span>
+    <blockquote class="blockquote">
+        <p class="mb-0 text-white quote">"Survival of the fittest"</p>
+        <footer class="blockquote-footer ml-5" style="font-size: small;">Charles Darwin</footer>
+      </blockquote></div>
+<div id="sketch-holder" style="position: relative; height: 500px"></div>
+<style>
+    .quote{
+        font-size: large;
+        font-family: cursive;
+    }
+</style>
+{% endblock body %}

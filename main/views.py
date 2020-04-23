@@ -94,6 +94,9 @@ def traversal(request):
 def sorting(request):
     return render(request, 'main/sorting.htm')
 
+def quick_sort(request):
+    return render(request, 'main/quicksort.htm')
+
 
 def bfs_visual(request):
     return render(request, 'main/bfsviz.htm')
@@ -109,23 +112,39 @@ def conv_hull(request):
 def dijkstra(request):
     return render(request, 'main/dijkstra.htm')
 
+def prims(request):
+    return render(request, 'main/prims.htm')
 
+
+def value_iteration(request):
+    return render(request, 'main/value_iter.htm')
+
+def genetic_algorithm(request):
+    return render(request, 'main/genetic_algo.htm')
+
+def travelling_salesperson(request):
+    return render(request, 'main/tsp.htm')
+
+def linear_regression(request):
+    return render(request, 'main/linreg.htm')
+
+#apply filters on the image
 def convolution_process(request):
-    return render(request, 'main/convprocess.htm')
+    img_name = request.session['img_name']
+    return render(request, 'main/convprocess.htm',
+     context = {
+        'img': img_name,
+        'range': range(3),
+     })
 
 
+#get the image
 def convolution(request):
     if request.method == 'POST':
         img_file = request.FILES['img-upload']
         fs = FileSystemStorage(location='./data/')
         fs.save(img_file.name, img_file)
+        request.session['img_name'] = img_file.name
         return HttpResponseRedirect(reverse('conv_process'))
     else:
         return render(request, 'main/convolution.htm')
-
-def adj_matrix(request):
-    n_vertices = request.session['n_vertices']
-    return render(request, 'main/adjmat.htm', context={
-        'n_vertices': n_vertices,
-        'range': range(n_vertices)
-    })

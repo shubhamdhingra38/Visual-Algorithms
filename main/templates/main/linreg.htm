@@ -1,0 +1,30 @@
+{% extends "main/index.htm" %}
+{% load static %}
+{% block heading %}
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <!-- TensorFlow -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@1.0.0/dist/tf.min.js"></script>
+    <title>Linear Regression</title>
+    <script src="{% static 'main/utils.js' %}"></script>
+    <script src="{% static 'main/lin_reg.js' %}"></script>
+
+{% endblock heading %}
+
+{% block body %}
+    <div class="info">
+        <br>
+        <p class="text-info my-2">Linear regression is a linear approach to modeling the relationship between a scalar response (or dependent variable) and one or more explanatory variables (or independent variables). The case of one explanatory variable is called simple linear regression.</p>
+        <br>
+        <p class="text-white my-0">The hypothesis function in this case is <mark>y = mx + c</mark>, where:</p>
+        <ul class="text-muted">
+            <li>y: dependent variable</li>
+            <li>x: independent variable</li>
+            <li>m, c: parameters</li>
+        </ul>
+        <p class="text-white"><mark>Gradient Descent</mark> is used for optimization. It minimizes the Mean Squared Error by changing parameters.</p>
+    </div>
+    <div id="sketch-holder" style="position: relative; height: 110vh">
+    </div>
+{% endblock body %}

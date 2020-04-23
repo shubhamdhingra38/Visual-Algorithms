@@ -14,21 +14,23 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.urls import path
-from .views import (
-    home, adj_matrix, traversal, bfs_visual,
-    dfs_visual, sorting, conv_hull,
-    dijkstra, convolution, convolution_process)
+from .views import *
 
 
 urlpatterns = [
     path('', home, name='home'),
-    path('input/', adj_matrix, name='adj_matrix'),
     path('traversal/', traversal, name='traversal'),
     path('dfs/visual/', dfs_visual, name='dfs_visual'),
     path('bfs/visual/', bfs_visual, name='bfs_visual'),
     path('sorting/', sorting, name='sorting'),
+    path('quicksort', quick_sort, name='quick_sort'),
     path('convhull/', conv_hull, name='convex_hull'),
     path('dijkstra/', dijkstra, name='dijkstra'),
     path('convolution/', convolution, name='convolution'),
-    path('convolution/process', convolution_process, name='conv_process')
+    path('convolution/process', convolution_process, name='conv_process'),
+    path('prims/', prims, name='prims_mst'),
+    path('valueiter', value_iteration, name='value_iteration'),
+    path('genetic', genetic_algorithm, name='genetic_algorithm'),
+    path('tsp', travelling_salesperson, name='tsp'),
+    path('linregression', linear_regression, name='lin_reg')
 ]
