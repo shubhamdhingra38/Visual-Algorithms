@@ -1,40 +1,67 @@
+{% extends "main/index.htm" %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
-    <title>Convolution2D</title>
-</head>
-<body>
-    <div id="input-kernel-type">
-        <input type="radio" id="kernel-identity" name="kernel" value="identity">
-        <label for="identity">Identity</label><br>
-        <input type="radio" id="kernel-sharpen" name="kernel" value="sharpen">
-        <label for="sharpen">Sharpen</label><br>
-        <input type="radio" id="kernel-edge-detection" name="kernel" value="edge-detection">
-        <label for="edge-detection">Edge Detection</label>
+{% block heading %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+<title>Convolution2D</title>
+
+{% endblock heading %}
+
+{% block body %}
+
+<div class="mt-3">
+    <p class="text-info">In image processing, a kernel, convolution matrix, or mask is a small matrix. It is used for blurring, sharpening, embossing, edge detection, and more. This is accomplished by doing a convolution between a kernel and an image</p>
+    <p class="text-secondary">Convolution is the process of adding each element of the image to its local neighbors, weighted by the kernel. This is related to a form of mathematical convolution. The matrix operation being performed—convolution—is not traditional matrix multiplication.</p>
+</div>
+
+<div id="input-kernel-type">
+    <h2 class="text-warning">Kernel Type</h2>
+    <input type="radio" id="kernel-identity" name="kernel" value="identity">
+    <label for="identity" class="text-muted">Identity</label><br>
+    <input type="radio" id="kernel-sharpen" name="kernel" value="sharpen">
+    <label for="sharpen" class="text-muted">Sharpen</label><br>
+    <input type="radio" id="kernel-edge-detection" name="kernel" value="edge-detection">
+    <label for="edge-detection" class="text-muted">Edge Detection</label>
+</div>
+
+
+<div class="row">
+    <div id="my-sketch" class="col-lg-9" style="position: relative;">
     </div>
-    <div id="my-sketch">
 
+    <div class="col-lg-3">
+        <p class="text-muted">Custom filter</p>
+        <form action="" method="POST" id="custom-filter">
+            {% csrf_token %}
+            <div class="custom-filter">
+                {% for v1 in range %}
+                    {% for v2 in range %}
+                        <input type="text" name="field{{v1}}{{v2}}" size="3">
+                    {% endfor %}
+                    <br>
+                {% endfor %}
+                <br>
+            </div>
+        <button class="btn btn-success btn-sm">Submit</button>
+    </form>
     </div>
+    
+</div>
 
-
-</body>
 <style>
-    img{
-        display: block;
-        margin-left: auto;
-        margin-right: auto;
-        height: 400px;
-        margin-top: 100px;
-        width: 400px;
+    input[type="text"]{
+        width: 35px;
+        background-color: rgba(0, 255, 0, 0.13);
+        margin: 3px;
+        color: white;
     }
 </style>
+
 <script>
     var path = "{{ MEDIA_URL }}";
+    var img_name = "{{ img }}";
 </script>
 <script src="{% static 'main/conv.js' %}"></script>
-</html>
+<script src="{% static 'main/utils.js' %}"></script>
+{% endblock body %}

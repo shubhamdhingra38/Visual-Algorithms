@@ -345,9 +345,6 @@ function draw() {
       strokeWeight(4);
     vertices[i].display();
   }
-
-  //TODO
-  //debug info, useful errors to users such as where node cannot be placed
 }
 
 

@@ -1,23 +1,38 @@
+{% extends "main/index.htm" %}
 {% load static %}
-<!DOCTYPE html>
-<html>
-<head>
-  <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Convolution2D</title>
-  <script src="{% static 'main/conv.js' %}" type="module"></script>
-</head>
-<body>
-  <div>
-    <form action="" method="POST" enctype="multipart/form-data">
-      {% csrf_token %}
-      <label for="img-upload">Upload Image</label>
-      <br>
-      <input type="file" name="img-upload" id="img-upload">
-      <button type="submit">Submit</button>
-    </form>
-  </div>
-</body>
+{% block heading %}
 
-</html>
+    <title>BFS</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+    <title>Convolution2D</title>
+    <script src="{% static 'main/conv.js' %}" type="module"></script>
+
+{% endblock heading %}
+
+{% block body %}
+
+<div class="row d-flex justify-content-center vertical-center">
+  <form action="" method="POST" enctype="multipart/form-data" class="my-container">
+    {% csrf_token %}
+    <label for="img-upload" class="text-info m-3">Upload Image</label>
+    <br>
+    <input type="file" name="img-upload" id="img-upload" class="m-3">
+    <button type="submit" class="btn btn-sm btn-success" class="">Submit</button>
+  </form>
+</div>
+
+<style>
+  .my-container{
+    border: 3px double green;
+    padding-right: 50px;
+  }
+  .vertical-center {
+    min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
+    min-height: 100vh; /* These two lines are counted as one :-)       */
+  
+    display: flex;
+    align-items: center;
+  }
+</style>
+{% endblock body %}
