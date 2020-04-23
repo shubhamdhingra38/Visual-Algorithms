@@ -292,7 +292,6 @@ async function showShortestPath(v) {
   let currVertex = v;
   let r;
   while (parent[currVertex] != -1) {
-    console.log(parent[currVertex]);
     highlightedEdges.push([currVertex, parent[currVertex]]);
     r = highlightUtil(1000);
     currVertex = parent[currVertex];
