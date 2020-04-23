@@ -2,22 +2,34 @@
 {% load static %}
 {% block heading %}
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
-    <title>Travelling Salesman</title>
-    <script src="{% static 'main/utils.js' %}"></script>
-    <script src="{% static 'main/tsp.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+<title>Travelling Salesman</title>
+<script src="{% static 'main/utils.js' %}"></script>
+<script src="{% static 'main/tsp.js' %}"></script>
 
 {% endblock heading %}
 
 {% block body %}
-    <div class="info">
-        <br>
-        <p class="text-info my-2">TSP: Given a list of cities and the distances between each pair of cities, what is the shortest possible route that visits each city and returns to the origin city?</p>
-        <br>
-        <p class="text-muted my-0">It is an NP-hard problem in combinatorial optimization, important in operations research and theoretical computer science. There is no known polynomial time solution.</p>
-        <p class="text-muted my-0">Here, genetic algorithm is applied to optimize for the least distance covered.</p>
-    </div>
-    <div id="sketch-holder" style="position: relative; height: 110vh">
-    </div>
+<div class="info">
+    <br>
+    <p class="text-info my-2">TSP: Given a list of cities and the distances between each pair of cities, what is the
+        shortest possible route that visits each city and returns to the origin city?</p>
+    <br>
+    <p class="text-muted my-0">It is an NP-hard problem in combinatorial optimization, important in operations research
+        and theoretical computer science. There is no known polynomial time solution.</p>
+    <p class="text-muted my-0">Here, genetic algorithm is applied to optimize for the least distance covered.</p>
+</div>
+<div id="sketch-holder" style="position: relative; height: 110vh">
+</div>
+
+<style>
+    .info>.text-info {
+        font-size: 1.10rem !important;
+    }
+
+    .info>.text-muted {
+        font-size: 1rem !important;
+    }
+</style>
 {% endblock body %}

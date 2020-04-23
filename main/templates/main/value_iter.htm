@@ -2,19 +2,25 @@
 {% load static %}
 {% block heading %}
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
-    <title>Value Iteration</title>
-    <script src="{% static 'main/utils.js' %}"></script>
-    <script src="{% static 'main/value_iteration.js' %}"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+<title>Value Iteration</title>
+<script src="{% static 'main/utils.js' %}"></script>
+<script src="{% static 'main/value_iteration.js' %}"></script>
 
 {% endblock heading %}
 
 {% block body %}
 <div class="info">
-    <p class="text-info">Reinforcement learning (RL) is an area of machine learning concerned with how software agents ought to take actions in an environment in order to maximize the notion of cumulative reward. Reinforcement learning is one of three basic machine learning paradigms, alongside supervised learning and unsupervised learning.</p>
-    <p class="text-muted">It differs from supervised learning in not needing labelled input/output pairs be presented, and in not needing sub-optimal actions to be explicitly corrected. Instead the focus is on finding a balance between exploration (of uncharted territory) and exploitation (of current knowledge).</p>
-    <p class="text-muted">Assuming full knowledge of the MDP, the two basic approaches to compute the optimal action-value function are <mark>value iteration</mark> and <mark>policy iteration</mark>.</p>
+    <p class="text-info">Reinforcement learning (RL) is an area of machine learning concerned with how software agents
+        ought to take actions in an environment in order to maximize the notion of cumulative reward. Reinforcement
+        learning is one of three basic machine learning paradigms, alongside supervised learning and unsupervised
+        learning.</p>
+    <p class="text-muted">It differs from supervised learning in not needing labelled input/output pairs be presented,
+        and in not needing sub-optimal actions to be explicitly corrected. Instead the focus is on finding a balance
+        between exploration (of uncharted territory) and exploitation (of current knowledge).</p>
+    <p class="text-muted">Assuming full knowledge of the MDP, the two basic approaches to compute the optimal
+        action-value function are <mark>value iteration</mark> and <mark>policy iteration</mark>.</p>
 </div>
 <div class="row">
     <div class="instructions col-lg-3 col-sm-12 col-md-4 w-50">
@@ -34,10 +40,18 @@
 
 
 <style>
-    .instructions{
+    .instructions {
         padding: 0px !important;
         display: block;
         margin: auto;
+    }
+
+    .info>.text-info {
+        font-size: 1.10rem !important;
+    }
+
+    .info>.text-muted {
+        font-size: 1rem !important;
     }
 </style>
 {% endblock body %}

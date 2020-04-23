@@ -1,0 +1,41 @@
+{% extends "main/index.htm" %}
+{% load static %}
+
+{% block heading %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
+<script src="{% static 'main/conv_hull.js' %}"></script>
+<title>Convex Hull</title>
+{% endblock heading %}
+
+{% block body %}
+
+<div class="info">
+    <p class="text-info">In computational geometry, the gift wrapping algorithm is an algorithm for computing the
+        convex hull of a given
+        set of points.</p>
+    <p class="text-muted">In the two-dimensional case the algorithm is also known as Jarvis march; it has
+        <mark>O(nh)</mark> time complexity, where n is the number of points and h is the number of
+        points on the convex hull.</p>
+</div>
+<div class="slidecontainer my-3">
+    <label for="myRange" class="text-muted">Number of Points</label>
+    <input type="range" min="1" max="100" value="50" class="slider" id="myRange">
+    <button id="btn-start" class="btn btn-success btn-sm ml-3">Start</button>
+</div>
+<br>
+<br>
+<div id="sketch-holder" style="position: relative; height: 100vh;">
+
+</div>
+
+<style>
+    .info>.text-info {
+        font-size: 1.10rem !important;
+    }
+
+    .info>.text-muted {
+        font-size: 1rem !important;
+    }
+</style>
+{% endblock body %}

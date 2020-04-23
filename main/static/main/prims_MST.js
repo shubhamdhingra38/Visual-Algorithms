@@ -6,6 +6,7 @@ let fillColor;
 let sliderSpeedAnimation;
 let startButton;
 let cnv;
+let para;
 const radCircle = 10;
 const LEGEND_HEIGHT = 140,
   LEGEND_WIDTH = 150; //height, width of the legend box at bottom
@@ -26,7 +27,7 @@ class Node {
   }
 
   static drawNodes() {
-    nodes.forEach(function(node) {
+    nodes.forEach(function (node) {
       noStroke();
       let size = radCircle;
 
@@ -48,7 +49,7 @@ class Node {
 }
 
 function drawConnections() {
-  connections.forEach(function(connection) {
+  connections.forEach(function (connection) {
     fill(0);
     stroke(0);
     strokeWeight(2);
@@ -63,7 +64,7 @@ function prim() {
 
   //reset
   connections = [];
-  nodes.forEach(function(node) {
+  nodes.forEach(function (node) {
     node.isReached = false;
     node.isLeaf = true;
   });
@@ -77,8 +78,8 @@ function prim() {
     let record = width;
     let closestNode, connectingNode;
 
-    reached.forEach(function(reachedNode) {
-      unreached.forEach(function(unreachedNode) {
+    reached.forEach(function (reachedNode) {
+      unreached.forEach(function (unreachedNode) {
         let d = dist(reachedNode.location.x, reachedNode.location.y, unreachedNode.location.x, unreachedNode.location.y);
 
         if (d < record) {
@@ -99,7 +100,7 @@ function prim() {
   function doCalculation() {
     if (unreached.length > 0) {
       calculateConnection();
-      setTimeout(doCalculation, sliderSpeedAnimation.value() * 5);
+      setTimeout(doCalculation, 1000 - 5 * sliderSpeedAnimation.value());
     } else {
       console.log("done");
     }
@@ -126,6 +127,10 @@ function setup() {
   button.parent('sketch-holder');
   button.position(cnv.position().x, cnv.position().y - 50);
   button.mousePressed(prim)
+  para = createP("Speed");
+  para.style('color', color(0, 255, 0, 200));
+  para.parent('sketch-holder');
+  para.position(sliderSpeedAnimation.position().x, sliderSpeedAnimation.position().y - 25);
 
 
   defaultColor = color(0, 200, 0, 100);
@@ -147,7 +152,7 @@ function isMouseInside(x1, x2, y1, y2) {
   return false;
 }
 
-function windowResized(){
+function windowResized() {
   //resize the canvas
   resizeCanvas(windowWidth - 100, windowHeight - 100);
 }
