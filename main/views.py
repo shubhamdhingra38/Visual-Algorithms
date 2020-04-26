@@ -89,7 +89,9 @@ def home(request):
         request.session['n_vertices'] = n_vertices
     return render(request, 'main/home.htm')
 
-
+def about(request):
+    return render(request, 'main/about.htm')
+    
 def sorting(request):
     return render(request, 'main/sorting.htm')
 

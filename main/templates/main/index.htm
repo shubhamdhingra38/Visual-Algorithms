@@ -19,24 +19,25 @@
 </head>
 
 <body>
-    <div class="body-particles container-fluid">
+    <div class="body-particles">
         <!-- Wrapper -->
         <div id="wrapper">
             <!-- Navbar -->
-            <nav class="navbar sticky-top navbar-expand-md navbar-dark">
+
+            <nav id="navbarthing" class="navbar sticky-top navbar-expand-md navbar-dark nav-fill">
                 <a id="navbar-brand" class="navbar-brand" href="#">Visual Algorithms</a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarTogglerDemo02"
-                    aria-controls="navbarTogglerDemo02" aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbartoggler"
+                    aria-controls="navbartoggler" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+                <div class="collapse navbar-collapse" id="navbartoggler">
                     <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
                         <li class="nav-item active">
-                            <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
+                            <a class="nav-link" href="{% url 'home' %}">Home<span class="sr-only">(current)</span></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">Link</a>
+                            <a class="nav-link" href="{% url 'about' %}">About</a>
                         </li>
                     </ul>
                     <form class="form-inline my-2 my-lg-0">
@@ -45,9 +46,13 @@
                     </form>
                 </div>
             </nav>
-            {% block body %}
-            <!-- Some stuff here -->
-            {% endblock body %}
+            <div class="container-fluid">
+                {% block body %}
+                <!-- Some stuff here -->
+                {% endblock body %}
+            </div>
+
+
         </div>
     </div>
     
@@ -71,5 +76,4 @@
     <script src="{% static 'main/script_home.js' %}"></script>
 
 </body>
-
 </html>

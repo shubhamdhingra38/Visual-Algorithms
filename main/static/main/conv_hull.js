@@ -46,8 +46,8 @@ function windowResized() {
 function setPoints() {
     let x, y;
     for (let i = 0; i < n_points; ++i) {
-        x = random(1, width);
-        y = random(40, height);
+        x = random(10, width-10);
+        y = random(40, height-40);
         let p = new Point(x, y);
         points.push(p);
     }
@@ -66,12 +66,13 @@ function setPoints() {
 }
 
 function windowResized() {
-
+    resizeCanvas(windowWidth - 100, windowHeight - 200);
+    centerCanvas();
 }
 
 
 function setup() {
-    cnv = createCanvas(windowWidth, windowHeight - 200);
+    cnv = createCanvas(windowWidth - 100, windowHeight - 200);
     cnv.parent('sketch-holder');
     centerCanvas();
 }
@@ -96,7 +97,8 @@ function resetSketch() {
 function draw() {
     // let val = slider.value();
     // console.log(val);
-    clear();
+    initialDraw();
+    // clear();
     background('rgba(255, 255, 255, 0.1)');
     stroke(0, 255, 0, 220);
     strokeWeight(13);

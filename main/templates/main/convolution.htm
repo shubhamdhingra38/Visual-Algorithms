@@ -2,16 +2,16 @@
 {% load static %}
 {% block heading %}
 
+  <title>Convolution2D</title>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
-    <title>Convolution2D</title>
     <script src="{% static 'main/conv.js' %}" type="module"></script>
 
 {% endblock heading %}
 
 {% block body %}
 
-<div class="row d-flex justify-content-center vertical-center">
+<div class="row d-flex justify-content-center vertical-center" style="width: 100vw;">
   <form action="" method="POST" enctype="multipart/form-data" class="my-container">
     {% csrf_token %}
     <label for="img-upload" class="text-info m-3">Upload Image</label>
@@ -21,6 +21,7 @@
   </form>
 </div>
 
+
 <style>
   .my-container{
     border: 3px double green;
@@ -29,7 +30,7 @@
   .vertical-center {
     min-height: 100%;  /* Fallback for browsers do NOT support vh unit */
     min-height: 100vh; /* These two lines are counted as one :-)       */
-  
+    
     display: flex;
     align-items: center;
   }

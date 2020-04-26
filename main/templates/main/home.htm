@@ -12,33 +12,31 @@
   <!-- Row 1 -->
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
-      <img class="card-img-top mt-3" src="{% static 'main/images/BFS.png' %}" alt="">
+      <img class="card-img-top mt-3" src="{% static 'main/images/graph_traversal.png' %}" alt="">
       <div class="card-body text-center d-flex flex-column">
-        <h3 class="card-title bg-warning">BFS</h3>
-        <p class="card-text text-muted text-left">Traverses all neighbors of a given node and then all the
-          neighbors of the traversed neighbors through Queue.</p>
+        <h3 class="card-title bg-warning">Graph Traversal</h3>
+        <p class="card-text text-muted text-left">Breadth First Search and Depth First Search, two ways in which a graph can be traversed. BFS uses a queue and visits every neighbor first. DFS uses a stack and traverses the branch as deep as possible.</p>
         <a href="{% url 'bfsdfs' %}" class="stretched-link"></a>
       </div>
     </div>
   </div>
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
-      <img class="card-img-top mt-3" src="{% static 'main/images/DFS.png' %}" alt="">
+      <img class="card-img-top mt-3" src="{% static 'main/images/dijkstra_ssp.png' %}" alt="">
       <div class="card-body text-center d-flex flex-column">
         <h3 class="card-title bg-warning">Dijkstra's SSP</h3>
-        <p class="card-text text-muted text-left">Uses a stack to maintain track of traversal. All the nodes of a
-          neighboring nodes are visited before visting the other neighboring nodes. </p>
+        <p class="card-text text-muted text-left">A greedy algorithm to find the shortest path to every other vertex in a graph from a given source vertex.</p>
         <a href="{% url 'dijkstra' %}" class="stretched-link"></a>
       </div>
     </div>
   </div>
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
-      <img class="card-img-top mt-3" src="{% static 'main/images/BFS.png' %}" alt="">
+      <img class="card-img-top mt-3" src="{% static 'main/images/prims.png' %}" alt="">
       <div class="card-body text-center d-flex flex-column">
         <h3 class="card-title bg-warning">Prim's MST</h3>
-        <p class="card-text text-muted text-left">Traverses all neighbors of a given node and then all the
-          neighbors of the traversed neighbors through Queue.</p>
+        <p class="card-text text-muted text-left">Prim's is a greedy algorithm that finds a minimum spanning tree for a weighted undirected graph.
+        </p>
         <a href="{% url 'prims_mst' %}" class="stretched-link"></a>
       </div>
     </div>
@@ -48,33 +46,30 @@
 
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
-      <img class="card-img-top mt-3" src="{% static 'main/images/DFS.png' %}" alt="">
+      <img class="card-img-top mt-3" src="{% static 'main/images/conv2d.png' %}" alt="">
       <div class="card-body text-center d-flex flex-column">
         <h3 class="card-title bg-warning">Convolution2D</h3>
-        <p class="card-text text-muted text-left">Uses a stack to maintain track of traversal. All the nodes of a
-          neighboring nodes are visited before visting the other neighboring nodes.</p>
+        <p class="card-text text-muted text-left">Convolution is the process of adding each element of the image to its local neighbors, weighted by the kernel. This is extensively used in image processing and ConvNets in Deep Learning.</p>
         <a href="{% url 'convolution' %}" class="stretched-link"></a>
       </div>
     </div>
   </div>
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
-      <img class="card-img-top mt-3" src="{% static 'main/images/DFS.png' %}" alt="">
+      <img class="card-img-top mt-3" src="{% static 'main/images/val_iter.png' %}" alt="">
       <div class="card-body text-center d-flex flex-column">
         <h3 class="card-title bg-warning">Value Iteration</h3>
-        <p class="card-text text-muted text-left">Uses a stack to maintain track of traversal. All the nodes of a
-          neighboring nodes are visited before visting the other neighboring nodes. </p>
+        <p class="card-text text-muted text-left">An algorithm in Reinforcement Learning, which finds the optimal action-value function. It can only be used when the MDP is fully known.</p>
         <a href="{% url 'value_iteration' %}" class="stretched-link"></a>
       </div>
     </div>
   </div>
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
-      <img class="card-img-top mt-3" src="{% static 'main/images/BFS.png' %}" alt="">
+      <img class="card-img-top mt-3" src="{% static 'main/images/genetic.png' %}" alt="">
       <div class="card-body text-center d-flex flex-column">
         <h3 class="card-title bg-warning">Genetic Algorithm</h3>
-        <p class="card-text text-muted text-left">Traverses all neighbors of a given node and then all the
-          neighbors of the traversed neighbors through Queue.</p>
+        <p class="card-text text-muted text-left">Inspired by Darwin's theory of evolution and survival of the fittest, a randomly generated population converges to an optima for some given task by reproduction.</p>
         <a href="{% url 'genetic_algorithm' %}" class="stretched-link"></a>
       </div>
     </div>
@@ -84,33 +79,30 @@
 
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
-      <img class="card-img-top mt-3" src="{% static 'main/images/DFS.png' %}" alt="">
+      <img class="card-img-top mt-3" src="{% static 'main/images/insertion_sort.png' %}" alt="">
       <div class="card-body text-center d-flex flex-column">
         <h3 class="card-title bg-warning">Insertion Sort</h3>
-        <p class="card-text text-muted text-left">Uses a stack to maintain track of traversal. All the nodes of a
-          neighboring nodes are visited before visting the other neighboring nodes.</p>
+        <p class="card-text text-muted text-left">A simple sorting algorithm which runs in O(n&sup2). The technique followed is same as that a person uses when playing a game of cards.</p>
         <a href="{% url 'sorting' %}" class="stretched-link"></a>
       </div>
     </div>
   </div>
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
-      <img class="card-img-top mt-3" src="{% static 'main/images/DFS.png' %}" alt="">
+      <img class="card-img-top mt-3" src="{% static 'main/images/conv_hull.png' %}" alt="">
       <div class="card-body text-center d-flex flex-column">
         <h3 class="card-title bg-warning">Convex Hull</h3>
-        <p class="card-text text-muted text-left">Uses a stack to maintain track of traversal. All the nodes of a
-          neighboring nodes are visited before visting the other neighboring nodes. </p>
+        <p class="card-text text-muted text-left">The gift wrapping algorithm produces the Convex Hull or the minimum set of points as the vertices of a polygon such that all other points lie inside.</p>
         <a href="{% url 'convex_hull' %}" class="stretched-link"></a>
       </div>
     </div>
   </div>
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
-      <img class="card-img-top mt-3" src="{% static 'main/images/BFS.png' %}" alt="">
+      <img class="card-img-top mt-3" src="{% static 'main/images/TSP.png' %}" alt="">
       <div class="card-body text-center d-flex flex-column">
         <h3 class="card-title bg-warning">Travelling Salesman</h3>
-        <p class="card-text text-muted text-left">Traverses all neighbors of a given node and then all the
-          neighbors of the traversed neighbors through Queue.</p>
+        <p class="card-text text-muted text-left">A classical NP-hard problem which consists of minimizing the overall distance visiting every city and coming back to initial city.</p>
         <a href="{% url 'tsp' %}" class="stretched-link"></a>
       </div>
     </div>
@@ -121,33 +113,30 @@
 
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
-      <img class="card-img-top mt-3" src="{% static 'main/images/DFS.png' %}" alt="">
+      <img class="card-img-top mt-3" src="{% static 'main/images/lin_reg.png' %}" alt="">
       <div class="card-body text-center d-flex flex-column">
         <h3 class="card-title bg-warning">Linear Regression</h3>
-        <p class="card-text text-muted text-left">Uses a stack to maintain track of traversal. All the nodes of a
-          neighboring nodes are visited before visting the other neighboring nodes.</p>
+        <p class="card-text text-muted text-left">A concept in statistics and machine learning to model the relationship between a dependent and independent variable.</p>
         <a href="{% url 'lin_reg' %}" class="stretched-link"></a>
       </div>
     </div>
   </div>
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
-      <img class="card-img-top mt-3" src="{% static 'main/images/DFS.png' %}" alt="">
+      <img class="card-img-top mt-3" src="{% static 'main/images/quick_sort.png' %}" alt="">
       <div class="card-body text-center d-flex flex-column">
         <h3 class="card-title bg-warning">Quick Sort</h3>
-        <p class="card-text text-muted text-left">Uses a stack to maintain track of traversal. All the nodes of a
-          neighboring nodes are visited before visting the other neighboring nodes. </p>
+        <p class="card-text text-muted text-left">Quicksort is an efficient sorting algorithm. It has an average time complexity of O(nlogn). It uses divide and conquer.</p>
         <a href="{% url 'quick_sort' %}" class="stretched-link"></a>
       </div>
     </div>
   </div>
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
-      <img class="card-img-top mt-3" src="{% static 'main/images/BFS.png' %}" alt="">
+      <img class="card-img-top mt-3" src="{% static 'main/images/a_star.png' %}" alt="">
       <div class="card-body text-center d-flex flex-column">
         <h3 class="card-title bg-warning">A*</h3>
-        <p class="card-text text-muted text-left">Traverses all neighbors of a given node and then all the
-          neighbors of the traversed neighbors through Queue.</p>
+        <p class="card-text text-muted text-left">A* is a graph traversal and path search algorithm, which is often used in computer science due to its completeness, optimality, and optimal efficiency.</p>
         <a href="{% url 'a_star' %}" class="stretched-link"></a>
       </div>
     </div>

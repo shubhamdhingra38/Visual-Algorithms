@@ -10,7 +10,7 @@ const n_cards = 7;
 let anyUpdating = false;
 const speed_x = 1.5;
 let xPointer = yPointer = -1;
-
+let cnv;
 
 class Card {
     constructor(xPos, yPos, img) {
@@ -154,8 +154,9 @@ function preload() {
     loadCards();
 }
 
+
 function setup() {
-    let cnv = createCanvas(1366, 768);
+    cnv = createCanvas(windowWidth-50, windowHeight);
     // background(200);
     let img, c;
     shuffleArray(images);

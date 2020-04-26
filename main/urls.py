@@ -19,6 +19,7 @@ from .views import *
 
 urlpatterns = [
     path('', home, name='home'),
+    path('about', about, name='about'),
     path('traversal/', traversal, name='traversal'),
     path('bfsdfs/', bfsdfs, name='bfsdfs'),
     path('sorting/', sorting, name='sorting'),

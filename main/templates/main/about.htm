@@ -1,0 +1,26 @@
+{% extends "main/index.htm" %}
+{% load static %}
+
+{% block heading %}
+<title>About</title>
+{% endblock heading %}
+
+{% block body %}
+<div id="content">
+    <p class="text-white mt-5">This project is intended for educational purpose. Most of the people are visual learners and as algorithms are well-defined instructions they can be understood more easily through visualization.</h3>
+    <p class="text-white">Inspired by: <a href="https://visualgo.net/en">Visual Algo</a> and <a href="https://shiffman.net/">Daniel Shiffman</a></p> 
+    <a href="https://github.com/shubhamdhingra38/Visual-Algorithms">Source Code</a>
+</div>
+
+<style>
+    p{
+        font-size: 1rem;
+    }
+    .src{
+        font-size: 0.9rem;
+    }
+    #content{
+        margin-left: 15px;
+    }
+</style>
+{% endblock body %}

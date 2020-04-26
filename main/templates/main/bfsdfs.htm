@@ -9,41 +9,38 @@
 {% endblock heading %}
 
 {% block body %}
-<div class="mt-3">
-    <p class="text-info">Prim's is a greedy algorithm that finds a minimum spanning tree for a weighted undirected
-        graph.</p>
-    <p class="text-secondary">It finds a subset of the edges that forms a tree that includes every vertex, where the
-        total weight of all the edges in the tree is minimized. The algorithm operates by building this tree one vertex
-        at a time, from an arbitrary starting vertex, at each step adding the cheapest possible connection from the tree
-        to another vertex.</p>
 
+<div id="content">
+    <div class="mt-3">
+        <p class="text-info">Breadth-first search (BFS) is an algorithm for traversing or searching tree or graph data structures. It starts at the tree root, and explores all of the neighbor nodes at the present depth prior to moving on to the nodes at the next depth level. It uses <mark>Queue</mark> data structure.</p>
+        <p class="text-info">The opposite, Depth-first search (DFS), which instead explores the node branch as far as possible before being forced to backtrack and expand other nodes. It uses <mark>Stack</mark> data structure.</p>
+    
+    </div>
+    <form method="POST" id="submit-form" class="mx-3">
+        {% csrf_token %}
+        <input type="radio" name="traversal-type" id="bfs" name="traversal" value="bfs" checked>
+        <label for="DFS" class="text-muted">BFS</label>
+        <input type="radio" name="traversal-type" id="dfs" name="traversal" value="dfs" class="ml-2">
+        <label for="DFS" class="text-muted">DFS</label>
+        <br>
+        <input type="text" name="source" id="source" placeholder="Source" style="width: 70px; height: 25px; font-size: 0.7rem">
+        <br>
+        <button class="my-2 btn btn-success btn-sm" id="submit-btn" type="button">Start</button>
+        <input class="mx-1 my-2 btn btn-secondary btn-sm" type="button" name="reset-btn" id="reset-btn" value="Reset">
+    </form>
+    
+    <p class="text-white mt-3 mb-1 mx-3">Left click to add nodes</p>
+    <p class="text-white mb-0 mx-3">Right click to add edges</p>
+    
+    <div id="sketch-holder" style="position: relative; height: 110vh">
+    </div>
 </div>
-<form method="POST" id="submit-form" class="mx-3">
-    {% csrf_token %}
-    <input type="radio" name="traversal-type" id="bfs" name="traversal" value="bfs" checked>
-    <label for="DFS" class="text-muted">BFS</label>
-    <input type="radio" name="traversal-type" id="dfs" name="traversal" value="dfs" class="ml-2">
-    <label for="DFS" class="text-muted">DFS</label>
-    <br>
-    <input type="text" name="source" id="source" placeholder="Source" style="width: 70px; height: 25px; font-size: 0.7rem">
-    <br>
-    <button class="my-2 btn btn-success btn-sm" id="submit-btn" type="button">Start</button>
-    <input class="mx-1 my-2 btn btn-secondary btn-sm" type="button" name="reset-btn" id="reset-btn" value="Reset">
-</form>
-
-<p class="text-white mt-3 mb-1 mx-3">Left click to add nodes</p>
-<p class="text-white mb-0 mx-3">Right click to add edges</p>
-
-<div id="sketch-holder" style="position: relative; height: 110vh">
-</div>
-
 <style>
     .text-info {
-        font-size: 1.10rem;
+        font-size: 1rem;
     }
-
-    .text-secondary {
-        font-size: 1.0rem;
+    #content{
+        margin-left: 15px;
     }
 </style>
 
