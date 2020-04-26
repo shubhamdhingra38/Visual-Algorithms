@@ -1,37 +1,18 @@
-//create a graph with p5.js
-var counter = 0;
-var radius = 50;
-var sizeOfText = 30;
-var radCircle = 70,
-  radSmallCircle = 30;
-var edgeColor;
-var vertices = [];
-var v;
-var node1, node2;
-var highlightColor, defaultColor, defaultFill;
-var nodeToJoin = null;
+let counter = 0;
+const sizeOfText = 30;
+const radCircle = 50;
+const timeout = 800;
+let vertices = [];
+let v;
+let node1, node2;
+let highlightColor, defaultColor, defaultFill;
+let nodeToJoin = null;
 //graph may contain cycles, which is allowed. self loops are not allowed here
-var adjMat = {};
-var visX = 0,
-  visY = 0,
-  slopeM;
-var isVisiting = false;
-var edges = []
-var x1, x2, y1, y2;
-var directionX = 1,
-  directionY = 0;
-var transX = 2,
-  transY = 2;
-var epsilon = 2;
-var cnv; //canvas
-var result;
-var next = 0,
-  len = 0,
-  numRoot = 0,
-  currRoot;
-var visited = {};
-var timeout = 1000;
-
+let adjMat = {};
+let edges = []
+let cnv; //canvas
+let result;
+let type = "bfs";
 
 //speedup
 p5.disableFriendlyErrors = true; // disables FES
@@ -44,7 +25,8 @@ class Vertex {
     this.mouseY = yPos;
     this.fill = defaultFill;
     this.visitedFill = 0;
-    this.counter = counter
+    this.counter = counter;
+
     if (counter >= 10) {
       this.size = sizeOfText / 1.25;
       this.xPos = xPos - sizeOfText / 2.5;
@@ -56,6 +38,7 @@ class Vertex {
     }
   }
   display() {
+    translate(p5.Vector(this.tx, this.ty));
     fill(this.visitedFill, 0, 0, this.fill);
     stroke(this.color);
     circle(this.mouseX, this.mouseY, radCircle);
@@ -155,32 +138,8 @@ function mapBackward(valX, valY) {
   return [x, y];
 }
 
-function moveSmallCircle() {
-  //translate from v1 to v2 (v1 ----> v2)
-  //slope can be calcualted
-  //then for some increment in x, value for y can be determined and plotted
-  //y = m*x + c
-  //m = (y2-y1)/(x2-x1)
-  //(y2-y1) = m(x2-x1)
-  //x1 = x2 - (y2-y1)/m
-  let newX = visX + directionX * transX;
-  let newY = visY + directionY * transY;
-  res = mapForward(newX, newY);
-  newX = res[0];
-  newY = res[1];
-  if (directionY == 0) {
-    visY = y2 - slopeM * (x2 - newX);
-    res = mapBackward(newX, visY);
-  } else {
-    visX = x2 - ((y2 - newY) / slopeM);
-    res = mapBackward(visX, newY);
-  }
-  visX = res[0];
-  visY = res[1];
-}
-
-
 function resetSketch() {
+  loop();
   clear();
   //reset stuff
   node1.markVisited();
@@ -190,66 +149,9 @@ function resetSketch() {
   vertices = [];
   edges = [];
   adjMat = {};
-  visited = {};
 }
 
-
-function calculate() {
-  visX = node1.mouseX;
-  visY = node1.mouseY;
-  let res = mapForward(node1.mouseX, node1.mouseY);
-  x1 = res[0];
-  y1 = res[1];
-  res = mapForward(node2.mouseX, node2.mouseY);
-  x2 = res[0];
-  y2 = res[1];
-  slopeM = (y2 - y1) / (x2 - x1);
-  if (abs(slopeM) >= 1) {
-    directionX = 0;
-    directionY = node1.mouseY < node2.mouseY ? 1 : -1;
-  } else {
-    directionX = node1.mouseX < node2.mouseX ? 1 : -1;
-    directionY = 0;
-  }
-  isVisiting = true;
-}
-
-function sendNext() {
-  // u ---> v
-  if (next == len) {
-    currRoot += 1;
-    if (currRoot == numRoot)
-      return;
-    node1 = vertices[result[currRoot][0]];
-    len = result[currRoot][1].length;
-    next = 0; //reset
-  }
-  // node1 = vertices[result[next]];
-  let nd = result[currRoot][1][next];
-  if (!visited[nd]) {
-    visited[nd] = true;
-    node2 = vertices[result[currRoot][1][next]];
-    calculate();
-    next += 1;
-  } else {
-    next += 1;
-    //make a recursive call, skip current vertex as it is already visited
-    sendNext();
-  }
-}
-
-function initBFS(res) {
-  node1 = vertices[res[0][0]];
-  numRoot = res.length;
-  currRoot = 0;
-  result = res;
-  len = result[0][1].length;
-  next = 0;
-  sendNext();
-}
-
-
-function dfsUtil(idx) {
+function waitNext(idx) {
   return new Promise((res, rej) => {
     setTimeout(() => {
       res([vertices[result[idx]], vertices[result[idx + 1]]]);
@@ -257,18 +159,32 @@ function dfsUtil(idx) {
   });
 }
 
+async function initBFS(res){
+  result = res;
+  let nextNodes;
+  vertices[res[0]].markVisited();
+  for (let i = 0; i < res.length - 1; ++i) {
+    nextNodes = await waitNext(i);
+    node1 = nextNodes[0];
+    node2 = nextNodes[1];
+    node1.markVisited();
+    node2.markVisited();
+  }
+  noLoop();
+}
 
 async function initDFS(res) {
   result = res;
   let nextNodes;
   vertices[res[0]].markVisited();
   for (let i = 0; i < res.length - 1; ++i) {
-    nextNodes = await dfsUtil(i);
+    nextNodes = await waitNext(i);
     node1 = nextNodes[0];
     node2 = nextNodes[1];
     node1.markVisited();
     node2.markVisited();
   }
+  noLoop();
 }
 
 function getAdjMat() {
@@ -294,7 +210,8 @@ function getAdjMat() {
 }
 
 function windowResized() {
-  resizeCanvas(windowWidth / 2, windowHeight - 200);
+  resizeCanvas(windowWidth - 100, windowHeight - 100);
+  cnv.position(25, 30);
   resetSketch();
   isUpdating = false;
 }
@@ -302,36 +219,27 @@ function windowResized() {
 
 function setup() {
   setAttributes('antialias', true);
-  cnv = createCanvas(windowWidth / 2, windowHeight - 200);
+  cnv = createCanvas(windowWidth - 100, windowHeight - 100);
   cnv.parent('sketch-holder');
+  cnv.position(25, 30);
   clear();
   // background('rgba(0,255,0, 0.25)');
   // cnv.position(0, 0); //center
   defaultFill = 100;
   highlightColor = color(255, 0, 0, 200);
   defaultColor = color(255, 255, 255, 200);
+  smallCirc = new Vertex(200, 200);
+  smallCirc.tx = 100;
+  // smallCirc.translateCircle();
+
 }
 
 
 function draw() {
   clear();
-  // background('rgba(0,255,0, 0.25)');
   fill('rgba(255, 255, 255, 0.1)');
   stroke(color(0, 255, 0, 200));
   rect(0, 0, cnv.width, cnv.height);
-  if (isVisiting) {
-    if (abs(visX - node2.mouseX) <= epsilon && (visY - node2.mouseY) <= epsilon) {
-      node1.markVisited();
-      node2.markVisited();
-      isVisiting = false; //reset
-      sendNext();
-    } else {
-      moveSmallCircle();
-      fill(0, 255, 0, 100);
-      stroke(color(0, 255, 0, 200));
-      circle(visX, visY, radSmallCircle);
-    }
-  }
 
   for (let i = 0; i < edges.length; ++i) {
     stroke(defaultColor);
@@ -347,11 +255,42 @@ function draw() {
   }
 }
 
-
 //jquery
 //source: https://stackoverflow.com/questions/28062979/disable-right-click-on-specific-div-or-class
 $("document").ready(function () {
+  //get type of traversal
+  $('input[type=radio][name=traversal-type]').change(function () {
+    type = this.value;
+  });
   $('#sketch-holder').bind('contextmenu', function (e) {
     return false;
   });
+    $("#reset-btn").on("click", function () {
+        resetSketch();
+    });
+    $("#submit-btn").on("click", function () {
+        var src = $("#source").val();
+        var mat = getAdjMat();
+        //ajax call (computation is done backend)
+        $.ajax({
+            type: 'POST',
+            url: '/home/traversal/',
+            data: {
+                values: JSON.stringify({
+                    'type': type,
+                    'src': src,
+                    'mat': mat
+                }),
+                csrfmiddlewaretoken: $('input[name=csrfmiddlewaretoken]').val()
+            },
+            success: function (data) {
+                var result = data["result"];
+                if (type.toLowerCase() == 'bfs')
+                    initBFS(result);
+                else
+                    initDFS(result);
+            }
+
+        })
+    });
 });

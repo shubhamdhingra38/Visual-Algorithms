@@ -1,0 +1,42 @@
+{% extends "main/index.htm" %}
+{% load static %}
+{% block heading %}
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/0.10.2/p5.js"></script>
+<script src="https://unpkg.com/mappa-mundi@0.0.5/dist/mappa.js" type="text/javascript"></script>
+<title>A*</title>
+<script src="{% static 'main/utils.js' %}"></script>
+<script src="{% static 'main/a_star.js' %}"></script>
+
+{% endblock heading %}
+
+{% block body %}
+
+<div class="info">
+  <p class="text-info mt-3">A* is a graph traversal and path search algorithm, which is often used in computer science due to its completeness, optimality, and optimal efficiency</p>
+  <p class="text-muted mb-1">It is an <mark>informed search algorithm</mark>, or a best-first search, meaning that it is formulated in terms of weighted graphs: starting from a specific starting node of a graph, it aims to find a path to the given goal node having the smallest cost.</p>
+  <p class="text-muted mb-0">A* selects the path that minimizes
+    <mark>f(n) = g(n) + h(n)</mark></p>
+  <p class="text-muted mb-0">where n is the next node on the path, g(n) is the cost of the path from the start node to n, and h(n) is a <mark>heuristic</mark> function that estimates the cost of the cheapest path from n to the goal.</p>
+  <br>
+  <p class="text-white">Left click and mouse drag to add obstacles.</p>
+
+</div>
+
+
+<div id="sketch-holder" style="position: relative; height: 110vh">
+</div>
+
+
+<style>
+  .text-info {
+    font-size: 1.10em !important;
+  }
+
+  .text-muted {
+    font-size: 1rem !important;
+  }
+</style>
+
+{% endblock body %}

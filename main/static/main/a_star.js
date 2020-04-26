@@ -1,212 +1,278 @@
-const GRID_SIZE = 50;
-const WALL_RATE = 0.5; // Percent chance  
-const SEARCH_RATE = 60; // FPS
+let cols = 50;
+let rows = 50;
 
-let grid;
+let grid = [];
+
 let openSet = [];
 let closedSet = [];
-let start, end;
 
-let colW, rowH;
+let started = false;
 
-let path;
-let solved = false;
+let start;
+let end;
+let w, h;
+let path = [];
 
-function setup() {
-  createCanvas(600, 600);
-  frameRate(SEARCH_RATE);
-  
-  grid = new Grid(GRID_SIZE, GRID_SIZE);
-  start = grid.grid[0][0]; // Start top-left
-  end = grid.grid[grid.cols-1][grid.rows-1]; // Find bottom-right
-  
-  openSet.push(start);
-  
-  colW = width / grid.cols;
-  rowH = height / grid.rows;
-}
+let cnv;
+let startBtn;
+let resetBtn;
 
-function draw() {
-  background(191);
-
-  astar();
-  
-  strokeWeight(colW - 2);
-  stroke(0);
-  fill(0);
-  for (let x = 0; x < grid.cols - 1; ++x) {
-    for (let y = 0; y < grid.rows - 1; ++y) {
-      if (grid.grid[x][y].isWall) {
-        let hWall = grid.grid[x+1][y].isWall;
-        let vWall = grid.grid[x][y+1].isWall;
-        if (hWall && vWall && grid.grid[x+1][y+1].isWall) {
-          rect((x+0.5)*colW, (y+0.5)*rowH, colW, rowH);
-        } else {
-          if (hWall) {
-            line((x+0.5)*colW, (y+0.5)*rowH, (x+1.5)*colW, (y+0.5)*rowH);
-          }
-          if (vWall) {
-            line((x+0.5)*colW, (y+0.5)*rowH, (x+0.5)*colW, (y+1.5)*rowH);
-          }
-        }
-      }
-    }
-  }
-  
-  openSet.forEach(c => c.draw(color(0, 140, 0, 127)));
-  closedSet.forEach(c => c.draw(color(170)));
-  
-  strokeWeight(colW/3);
-  if (solved) stroke(0, 255, 0);
-  else if (openSet.length == 0) stroke(255, 0, 0);
-  else stroke(255, 255, 0);
-  let prevPos = path[0].pos;
-  for (let i = 1; i < path.length; ++i) {
-    let nextPos = path[i].pos;
-    line((prevPos.x+0.5)*colW, (prevPos.y+0.5)*rowH, (nextPos.x+0.5)*colW, (nextPos.y+0.5)*rowH);
-    prevPos = nextPos;
-  }
-}
-
-function astar() {
-  if (!solved && openSet.length > 0) {
-    let bestIndex = 0;
-    for (let i = 0; i < openSet.length; ++i) {
-      if (openSet[i].f < openSet[bestIndex].f) {
-        bestIndex = i;
-      }
-    }
-    
-    let current = openSet[bestIndex];
-    
-    let pathCell = current;
-    path = [ pathCell ];
-    while (pathCell.prev) {
-      path.push(pathCell.prev);
-      pathCell = pathCell.prev;
-    }
-    
-    if (current == end) {
-      solved = true;
-      return;
-    }
-    
-    openSet.splice(bestIndex, 1);
-    closedSet.push(current);
-    
-    current.neighbors.forEach(neighbor => {
-      if (closedSet.some(c => c == neighbor)) return;
-      
-      let g = current.g + current.pos.dist(neighbor.pos);
-      
-      if (!openSet.some(c => c == neighbor)) {
-        openSet.push(neighbor);
-      } else if (g >= neighbor.g) {
-        return;
-      }
-      
-      neighbor.g = g;
-      neighbor.h = heuristic(neighbor, end);
-      neighbor.f = neighbor.g + neighbor.h;
-      neighbor.prev = current;
-    });
-  }}
-
-function heuristic(a, b) {
-  let dx = abs(a.pos.x - b.pos.x);
-  let dy = abs(a.pos.y - b.pos.y);
-  
-  if (dx <= dy) {
-    return dx * sqrt(2) + (dy - dx);
-  }
-  return dy * sqrt(2) + (dx - dy);
-}
-
-// Grid
-
-class Grid {
-  constructor(cols, rows) {
-    this.cols = cols;
-    this.rows = rows;
-    this.grid = [];
-    
-    // Generate cells
-    for (let x = 0; x < this.cols; ++x) {
-      this.grid[x] = [];
-      for (let y = 0; y < this.rows; ++y) {
-        this.grid[x][y] = new Cell(createVector(x, y));
-      }
-    }
-    
-    // Generate walls
-    for (let x = 0; x < this.cols; ++x) {
-      for (let y = 0; y < this.rows; ++y) {
-        if ((x == 0 && y == 0) || (x == this.cols - 1 && y == this.rows - 1)) {
-          continue;
-        }
-        this.grid[x][y].isWall = (random() < WALL_RATE);
-      }
-    }
-    
-    // Build neighbor maps
-    for (let x = 0; x < this.cols; ++x) {
-      for (let y = 0; y < this.rows; ++y) {
-        this.grid[x][y].addNeighbors(this.grid);
-      }
-    }
-  }
-  
-  draw() {
-    noFill();
-    strokeWeight(1);
-    stroke(255);
-    let colW = width / this.cols, rowH = height / this.rows;
-    for (let x = 0; x < this.cols; ++x) {
-      for (let y = 0; y < this.cols; ++y) {
-        this.grid[x][y].draw();
-      }
-    }
-  }
-}
-
-// Cell
+let current;
 
 class Cell {
-  constructor(pos) {
-    this.pos = pos;
+  constructor(i, j) {
+    this.i = i;
+    this.j = j;
     this.f = 0;
     this.g = 0;
     this.h = 0;
-    this.isWall = false;
-    this.prev = undefined;
+    this.neighbors = [];
+    this.previous = undefined;
+    this.wall = false;
+  }
+
+  show(col){
+    if (this.wall) {
+      fill(0);
+      noStroke();
+      ellipse(this.i * w + w / 1.5, this.j * h + h / 1.5, w / 1.5, h / 1.5);
+    } else if (col) {
+      fill(col);
+      rect(this.i * w, this.j * h, w, h);
+    }
   }
   
-  addNeighbors(grid) {
-    let addNeighborIfValid = function(cell, x, y) {
-      if (x >= 0 && x < grid.length && y >= 0 && y < grid[0].length) {
-        let neighbor = grid[x][y];
-        if (!neighbor.isWall) {
-          cell.neighbors.push(neighbor);
+  addNeighbors(grid){
+    let i = this.i;
+    let j = this.j;
+    if (i < cols - 1) {
+      this.neighbors.push(grid[i + 1][j]);
+    }
+    if (i > 0) {
+      this.neighbors.push(grid[i - 1][j]);
+    }
+    if (j < rows - 1) {
+      this.neighbors.push(grid[i][j + 1]);
+    }
+    if (j > 0) {
+      this.neighbors.push(grid[i][j - 1]);
+    }
+    if (i > 0 && j > 0) {
+      this.neighbors.push(grid[i - 1][j - 1]);
+    }
+    if (i < cols - 1 && j > 0) {
+      this.neighbors.push(grid[i + 1][j - 1]);
+    }
+    if (i > 0 && j < rows - 1) {
+      this.neighbors.push(grid[i - 1][j + 1]);
+    }
+    if (i < cols - 1 && j < rows - 1) {
+      this.neighbors.push(grid[i + 1][j + 1]);
+    }
+  }
+}
+
+
+function removeFromArray(arr, elt) {
+  for (let i = arr.length - 1; i >= 0; i--) {
+    if (arr[i] == elt) {
+      arr.splice(i, 1);
+    }
+  }
+}
+
+function mouseDragged() { //add obstacles
+  for (let i = 0; i < grid.length; ++i) {
+    for (let j = 0; j < grid[i].length; ++j) {
+      if (mouseX > w * grid[i][j].i && mouseX < w * grid[i][j].i + w && mouseY > h * grid[i][j].j && mouseY < h * grid[i][j].j + h) {
+        grid[i][j].wall = true;
+      }
+    }
+  }
+}
+
+function heuristic(a, b) {
+  //euclidean distance
+  let d = dist(a.i, a.j, b.i, b.j);
+  return d;
+}
+
+
+function initialize() {
+  if (started) {
+    started = false;
+    reset();
+  }
+  clear();
+  openSet.push(start);
+  started = true;
+  loop();
+}
+
+
+function setup() {
+  let m = Math.min(windowWidth, windowHeight)
+  cnv = createCanvas(m-50, m-50);
+  cnv.parent('sketch-holder');
+  var x = (windowWidth - width) / 2;
+  var y = (windowHeight - height) / 2;
+  cnv.position(x, 70);
+
+  frameRate(25);
+
+  w = width / cols;
+  h = height / rows;
+
+  reset();
+
+  startBtn = createButton("Start");
+  startBtn.parent('sketch-holder');
+  startBtn.position(cnv.position().x, cnv.position().y - 50);
+  startBtn.mousePressed(initialize);
+
+  resetBtn = createButton("Reset");
+  resetBtn.parent('sketch-holder');
+  resetBtn.position(cnv.position().x + 100, cnv.position().y - 50);
+  resetBtn.mousePressed(reset);
+
+  applyStyle(startBtn);
+  applyStyle(resetBtn);
+}
+
+function applyStyle(btn){
+  btn.class('btn');
+  btn.class('btn-sm'); btn.class('btn-success');
+  btn.style('border-radius: 5px');
+}
+
+function windowResized(){
+  let m = Math.min(windowWidth, windowHeight)
+  resizeCanvas(m-50, m-50);
+  w = width / cols;
+  h = height / rows;
+  var x = (windowWidth - width) / 2;
+  var y = (windowHeight - height) / 2;
+  cnv.position(x, 70);
+  startBtn.position(cnv.position().x, cnv.position().y - 50);
+  resetBtn.position(cnv.position().x + 100, cnv.position().y - 50);
+  reset();
+
+}
+
+function reset() {
+  clear();
+  background(200);
+  for (let i = 0; i < cols; i++) {
+    grid[i] = new Array(rows);
+  }
+
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      grid[i][j] = new Cell(i, j);
+    }
+  }
+
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      grid[i][j].addNeighbors(grid);
+    }
+  }
+  start = grid[0][0];
+  end = grid[cols - 1][rows - 1];
+  start.wall = false;
+  end.wall = false;
+  started = false;
+  openSet = [];
+  closedSet = [];
+  path = [];
+  loop();
+}
+
+
+function draw() {
+  if (openSet.length > 0) {
+    let winner = 0;
+    for (let i = 0; i < openSet.length; i++) {
+      if (openSet[i].f < openSet[winner].f) {
+        winner = i;
+      }
+    }
+    current = openSet[winner];
+
+    if (current === end) {
+      noLoop();
+      return;
+    }
+
+    removeFromArray(openSet, current);
+    closedSet.push(current);
+
+    let neighbors = current.neighbors;
+    for (let i = 0; i < neighbors.length; i++) {
+      let neighbor = neighbors[i];
+      if (!closedSet.includes(neighbor) && !neighbor.wall) {
+        let tempG = current.g + heuristic(neighbor, current);
+        let newPath = false;
+        if (openSet.includes(neighbor)) {
+          if (tempG < neighbor.g) {
+            neighbor.g = tempG;
+            newPath = true;
+          }
+        } else {
+          neighbor.g = tempG;
+          newPath = true;
+          openSet.push(neighbor);
+        }
+        if (newPath) {
+          neighbor.h = heuristic(neighbor, end);
+          neighbor.f = neighbor.g + neighbor.h;
+          neighbor.previous = current;
         }
       }
     }
-    
-    this.neighbors = [];
-    for (let x = -1; x <= 1; ++x) {
-      for (let y = -1; y <= 1; ++y) {
-        addNeighborIfValid(this, this.pos.x + x, this.pos.y + y);
-      }
+  }
+
+  initialDraw();
+  start.show(color(255, 0, 255, 200));
+  end.show(color(0, 255, 0, 200));
+
+
+  for (let i = 0; i < cols; i++) {
+    for (let j = 0; j < rows; j++) {
+      grid[i][j].show();
     }
   }
-  
-  draw(col) {
-    let x = (this.pos.x + 0.5) * colW;
-    let y = (this.pos.y + 0.5) * rowH;
-    
-    if (this.isWall || col) {
-      noStroke();
-      fill(this.isWall ? 42 : col);
-      ellipse(x, y, colW - 4, rowH - 4);
+
+
+
+  for (let i = 0; i < closedSet.length; i++) {
+    closedSet[i].show(color(255, 0, 0, 80));
+  }
+
+
+  for (let i = 0; i < openSet.length; i++) {
+    openSet[i].show(color(0, 255, 0, 80));
+  }
+
+
+  if (started && (openSet.length != 0)) {
+    path = [];
+    let temp = current;
+    path.push(temp);
+    while (temp.previous) {
+      path.push(temp.previous);
+      temp = temp.previous;
     }
-   }
+
+    noFill();
+    stroke(0, 0, 0, 200);
+    strokeWeight(w / 2);
+    beginShape();
+    for (let i = 0; i < path.length; i++) {
+      vertex(path[i].i * w + w / 1.5, path[i].j * h + h / 1.5);
+    }
+    endShape();
+    stroke(0);
+    fill(0);
+  }
 }

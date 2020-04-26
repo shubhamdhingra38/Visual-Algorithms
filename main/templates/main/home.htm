@@ -8,6 +8,7 @@
 
 <!-- Cards -->
 <div class="card-deck mx-3">
+  
   <!-- Row 1 -->
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
@@ -16,18 +17,7 @@
         <h3 class="card-title bg-warning">BFS</h3>
         <p class="card-text text-muted text-left">Traverses all neighbors of a given node and then all the
           neighbors of the traversed neighbors through Queue.</p>
-        <a href="{% url 'bfs_visual' %}" class="stretched-link"></a>
-      </div>
-    </div>
-  </div>
-  <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
-    <div class="mt-5 card border-primary col-sm-12 h-100">
-      <img class="card-img-top mt-3" src="{% static 'main/images/DFS.png' %}" alt="">
-      <div class="card-body text-center d-flex flex-column">
-        <h3 class="card-title bg-warning">DFS</h3>
-        <p class="card-text text-muted text-left">Uses a stack to maintain track of traversal. All the nodes of a
-          neighboring nodes are visited before visting the other neighboring nodes.</p>
-        <a href="{% url 'dfs_visual' %}" class="stretched-link"></a>
+        <a href="{% url 'bfsdfs' %}" class="stretched-link"></a>
       </div>
     </div>
   </div>
@@ -42,8 +32,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Row 2 -->
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
       <img class="card-img-top mt-3" src="{% static 'main/images/BFS.png' %}" alt="">
@@ -55,6 +43,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Row 2 -->
+
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
       <img class="card-img-top mt-3" src="{% static 'main/images/DFS.png' %}" alt="">
@@ -77,8 +68,6 @@
       </div>
     </div>
   </div>
-
-  <!-- Row 3 -->
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
       <img class="card-img-top mt-3" src="{% static 'main/images/BFS.png' %}" alt="">
@@ -90,6 +79,9 @@
       </div>
     </div>
   </div>
+
+  <!-- Row 3 -->
+
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
       <img class="card-img-top mt-3" src="{% static 'main/images/DFS.png' %}" alt="">
@@ -112,9 +104,6 @@
       </div>
     </div>
   </div>
-
-
-  <!-- Row 4 -->
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
       <img class="card-img-top mt-3" src="{% static 'main/images/BFS.png' %}" alt="">
@@ -126,6 +115,10 @@
       </div>
     </div>
   </div>
+
+
+  <!-- Row 4 -->
+
   <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
     <div class="mt-5 card border-primary col-sm-12 h-100">
       <img class="card-img-top mt-3" src="{% static 'main/images/DFS.png' %}" alt="">
@@ -148,7 +141,17 @@
       </div>
     </div>
   </div>
-
+  <div class="col-xs-12 col-md-6 col-lg-4 mb-5">
+    <div class="mt-5 card border-primary col-sm-12 h-100">
+      <img class="card-img-top mt-3" src="{% static 'main/images/BFS.png' %}" alt="">
+      <div class="card-body text-center d-flex flex-column">
+        <h3 class="card-title bg-warning">A*</h3>
+        <p class="card-text text-muted text-left">Traverses all neighbors of a given node and then all the
+          neighbors of the traversed neighbors through Queue.</p>
+        <a href="{% url 'a_star' %}" class="stretched-link"></a>
+      </div>
+    </div>
+  </div>
 </div>
 <br>
 

@@ -20,8 +20,7 @@ from .views import *
 urlpatterns = [
     path('', home, name='home'),
     path('traversal/', traversal, name='traversal'),
-    path('dfs/visual/', dfs_visual, name='dfs_visual'),
-    path('bfs/visual/', bfs_visual, name='bfs_visual'),
+    path('bfsdfs/', bfsdfs, name='bfsdfs'),
     path('sorting/', sorting, name='sorting'),
     path('quicksort', quick_sort, name='quick_sort'),
     path('convhull/', conv_hull, name='convex_hull'),
@@ -32,5 +31,6 @@ urlpatterns = [
     path('valueiter', value_iteration, name='value_iteration'),
     path('genetic', genetic_algorithm, name='genetic_algorithm'),
     path('tsp', travelling_salesperson, name='tsp'),
-    path('linregression', linear_regression, name='lin_reg')
+    path('linregression', linear_regression, name='lin_reg'),
+    path('astar', a_star, name='a_star')
 ]

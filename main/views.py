@@ -7,7 +7,7 @@ import json
 from collections import defaultdict
 import os
 
-DEBUG = True
+DEBUG = False
 GREEN = Fore.GREEN
 
 
@@ -28,7 +28,7 @@ class Graph:
         self.mat[u].append(v)
 
     def bfs(self, src):
-        result = []
+        result = [src]
         queue = [src]
         while len(queue) != 0:
             node = queue.pop(0)
@@ -43,8 +43,9 @@ class Graph:
                         if not self.visited[nbr]:
                             l.append(nbr)
                     if l != []:
-                        result.append([node, l])
+                        result.extend(l)
                 queue.extend(neighbors)
+        result.extend(l)
         return result
 
     def dfs_utility(self, node):
@@ -60,16 +61,6 @@ class Graph:
     def dfs(self, src):
         self.dfs_utility(src)
         return self.dfs_res
-
-
-def home(request):
-    if request.method == 'POST':
-        n_vertices = request.POST['n_vertices']
-        n_vertices = int(n_vertices)
-        request.session['n_vertices'] = n_vertices
-        return HttpResponseRedirect(reverse('adj_matrix'))
-    return render(request, 'main/home.htm')
-
 
 def traversal(request):
     if request.method == 'POST':
@@ -91,19 +82,22 @@ def traversal(request):
         return response
 
 
+def home(request):
+    if request.method == 'POST':
+        n_vertices = request.POST['n_vertices']
+        n_vertices = int(n_vertices)
+        request.session['n_vertices'] = n_vertices
+    return render(request, 'main/home.htm')
+
+
 def sorting(request):
     return render(request, 'main/sorting.htm')
 
 def quick_sort(request):
     return render(request, 'main/quicksort.htm')
 
-
-def bfs_visual(request):
-    return render(request, 'main/bfsviz.htm')
-
-
-def dfs_visual(request):
-    return render(request, 'main/dfsviz.htm')
+def bfsdfs(request):
+    return render(request, 'main/bfsdfs.htm')
 
 
 def conv_hull(request):
@@ -127,6 +121,9 @@ def travelling_salesperson(request):
 
 def linear_regression(request):
     return render(request, 'main/linreg.htm')
+
+def a_star(request):
+    return render(request, 'main/astar.htm')
 
 #apply filters on the image
 def convolution_process(request):
