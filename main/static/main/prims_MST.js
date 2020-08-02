@@ -126,6 +126,9 @@ function setup() {
   button = createButton('Start');
   button.parent('sketch-holder');
   button.position(cnv.position().x, cnv.position().y - 50);
+  button.addClass('btn');
+  button.addClass('btn-sm');
+  button.addClass('btn-success');
   button.mousePressed(prim)
   para = createP("Speed");
   para.style('color', color(0, 255, 0, 200));

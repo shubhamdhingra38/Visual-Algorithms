@@ -2,7 +2,7 @@
 {% load static %}
 
 {% block heading %}
-<title>BFS</title>
+<title>BFS/DFS</title>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/p5@1.0.0/lib/p5.js"></script>
 <script src="{% static 'main/bfsdfs.js' %}"></script>
@@ -29,8 +29,12 @@
         <input class="mx-1 my-2 btn btn-secondary btn-sm" type="button" name="reset-btn" id="reset-btn" value="Reset">
     </form>
     
-    <p class="text-white mt-3 mb-1 mx-3">Left click to add nodes</p>
-    <p class="text-white mb-0 mx-3">Right click to add edges</p>
+    <div class="float-right mb-3">
+      <p class="text-white mt-3 mb-1">Left click to add nodes</p>
+      <p class="text-white mb-0">Right click to add edges</p>
+    </div>
+    <br>
+    <br>
     
     <div id="sketch-holder" style="position: relative; height: 110vh">
     </div>

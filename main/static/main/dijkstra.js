@@ -19,7 +19,7 @@ let parent = []; //keep track of the path for printing the shortest path
 let highlightedEdges = [];
 let srcToV, edgeWt, currDist;
 
-const LEGEND_HEIGHT = 100,
+const LEGEND_HEIGHT = 130,
   LEGEND_WIDTH = 200; //height, width of the legend box at bottom
 
 //leaflet map code
@@ -400,6 +400,7 @@ function draw() {
   drawLegend(0, 0, color(0, 0, 255, 255), 1, "Source Vertex");
   drawLegend(0, 1, color(0, 0, 0, 150), 2, "Other Vertices");
   drawLegend(0, 2, color(255, 255, 51, 200), 3, "Shortest Path from Source", 13.5, 'line');
+  drawLegend(0, 3, color(255, 0, 0, 200), 4, "Path being explored", 13.5, 'line');
 }
 
 //JQuery

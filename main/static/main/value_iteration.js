@@ -191,7 +191,7 @@ class Env {
         possibleNextState.y = possibleNextState.y + 1;
       } else if (action == 2) {
         possibleNextState.x = possibleNextState.x - 1;
-      } else {
+      } else if (action == 3) {
         possibleNextState.x = possibleNextState.x + 1;
       }
       for (let i = 0; i < blockages.length; ++i) {
@@ -327,7 +327,7 @@ function setup() {
 
   initiateEnvironment();
   
-  sliderGamma = createSlider(0, 100, 50); //for gamma
+  sliderGamma = createSlider(70, 100, 75); //for gamma
   sliderGamma.position(cnv.position().x, cnv.position().y - 30);
   sliderGamma.parent('sketch-holder');
   sliderGamma.style('width', '80px');
@@ -408,12 +408,24 @@ function draw() {
     cells[i].pol = policy[i];
   }
 
+  let solutionFound = true;
 
   // highlight the path from start
   if (done) {
     let currCell = Object.assign({}, start);
     while (currCell.x != end.x || currCell.y != end.y) {
       let idx = agent.getIndex(currCell);
+      let cellCoords = {
+        'x': (idx - 1) % gridSize,
+        'y': Math.floor((idx - 1) / gridSize)
+      };
+      for (let j=0; j < blockages.length; ++j) {
+        if (currCell.x == blockages[j].x && currCell.y == blockages[j].y) {
+          solutionFound = false;
+          break;
+        }
+      }
+      if (!solutionFound) break;
       if(idx < 0 || idx >= gridSize * gridSize){
         solutionFound = false;
         for(let i=0; i<cells.length; ++i){
@@ -434,7 +446,6 @@ function draw() {
       }
     }
     done = false;
-    solutionFound = true;
   }
 
 

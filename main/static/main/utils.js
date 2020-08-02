@@ -16,8 +16,8 @@ function addStartButton(cnv, fn){
   btn = createButton("Start");
   btn.parent('sketch-holder');
   //style
-  btn.class('btn');
-  btn.class('btn-sm'); btn.class('btn-success');
+  btn.addClass('btn');
+  btn.addClass('btn-sm'); btn.addClass('btn-success');
   btn.style('border-radius: 5px');
   btn.position(cnv.position().x + 100, cnv.position().y - 45);
   btn.mousePressed(fn);
@@ -39,8 +39,8 @@ function startStopFunctionality(){
 function addStopButton(cnv){
   sbtn.parent('sketch-holder');
   //style
-  sbtn.class('btn');
-  sbtn.class('btn-sm'); sbtn.class('btn-success');
+  sbtn.addClass('btn');
+  sbtn.addClass('btn-sm'); sbtn.addClass('btn-success');
   sbtn.style('border-radius: 5px');
   sbtn.position(cnv.position().x + 200, cnv.position().y - 45);
   sbtn.mousePressed(startStopFunctionality);
