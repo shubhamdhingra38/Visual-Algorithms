@@ -129,21 +129,27 @@ def a_star(request):
 
 #apply filters on the image
 def convolution_process(request):
-    img_name = request.session['img_name']
-    return render(request, 'main/convprocess.htm',
-     context = {
-        'img': img_name,
-        'range': range(3),
-     })
+    #img_name = request.session['img_name']
+    return render(request, 'main/convprocess.htm', context= {
+        'range': range(3) })
+#    return render(request, 'main/convprocess.htm',
+#     context = {
+#        'img': img_name,
+#        'range': range(3),
+#     })
 
 
 #get the image
 def convolution(request):
-    if request.method == 'POST':
-        img_file = request.FILES['img-upload']
-        fs = FileSystemStorage(location='./data/')
-        fs.save(img_file.name, img_file)
-        request.session['img_name'] = img_file.name
-        return HttpResponseRedirect(reverse('conv_process'))
-    else:
-        return render(request, 'main/convolution.htm')
+    #removing this for now to deploy on heroku, will use a static image file instead
+
+    #if request.method == 'POST':
+    #    img_file = request.FILES['img-upload']
+    #    fs = FileSystemStorage(location='./data/')
+    #    fs.save(img_file.name, img_file)
+    #    request.session['img_name'] = img_file.name
+    #    return HttpResponseRedirect(reverse('conv_process'))
+    #else:
+    #    return render(request, 'main/convolution.htm')
+
+    return render(request, 'main/convolution.htm')

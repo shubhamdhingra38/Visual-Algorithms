@@ -71,8 +71,10 @@
 </style>
 
 <script>
-    var path = "{{ MEDIA_URL }}";
-    var img_name = "{{ img }}";
+    //var path = "{{ STATIC_URL }}";
+    var path = "{% static 'main/images/' %}";
+    //var img_name = "{{ img }}";
+
 </script>
 <script src="{% static 'main/conv.js' %}"></script>
 <script src="{% static 'main/utils.js' %}"></script>

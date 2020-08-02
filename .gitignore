@@ -6,6 +6,9 @@
 *.jfif
 *.jfi
 
+*.swp
+*.pyc
+
 # JPEG 2000
 *.jp2
 *.j2k

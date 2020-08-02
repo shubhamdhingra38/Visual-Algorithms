@@ -53,7 +53,10 @@ let maxpooling;
 
 // Load an image
 function preload() {
-  img = loadImage(path + img_name);
+  console.log(path);
+  let img_name = "bird.jpg";
+
+ img = loadImage(path + img_name);
   //downscale image to fit the size
 }
 
