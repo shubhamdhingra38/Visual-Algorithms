@@ -2,6 +2,9 @@
 
 This project is to provide an intuitive view of how algorithms works, which is by visualizing them and looking at what operations are performed at every step. Most people are visual learners and algorithms can be confusing at times. With this in mind, I approached this project to compile a list of classic algorithms in computer science for various fields.
 
+## Live Website: 
+https://algorithms-visualized.herokuapp.com/
+
 # Technology Stack
 
  - JavaScript/HTML/CSS
@@ -20,6 +23,7 @@ This project is to provide an intuitive view of how algorithms works, which is b
 ## Video
 
 > [Algorithms Visualized (p5.js)!](https://www.youtube.com/watch?v=6L2p9XwU7K0&feature=youtu.be)
+
 
 ## Full list of algorithms (WIP)
 
